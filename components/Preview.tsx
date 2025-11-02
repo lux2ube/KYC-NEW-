@@ -145,7 +145,6 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
 
   useEffect(() => {
     const generatePdf = async () => {
-        setIsGenerating(true);
         try {
             const { jsPDF } = jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
@@ -177,8 +176,14 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
             setIsGenerating(false);
         }
     };
-    generatePdf();
-  }, []); // Empty dependency array ensures this runs once on mount
+    
+    // Use a short timeout to ensure the DOM is ready and images are rendered
+    const timer = setTimeout(() => {
+        generatePdf();
+    }, 100);
+
+    return () => clearTimeout(timer); // Cleanup timer on unmount
+  }, []); 
 
   const handleShare = async () => {
     if (!pdfFile) return;
@@ -216,49 +221,49 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
     URL.revokeObjectURL(url);
   };
 
-  if (isGenerating) {
-    return (
-        <div className="flex flex-col items-center justify-center h-64">
-            <LoadingIcon className="w-12 h-12 text-orange-500 animate-spin" />
-            <p className="mt-4 text-lg font-semibold text-gray-700">جاري إنشاء المستند...</p>
-        </div>
-    );
-  }
-
   return (
     <div className="animate-fade-in" dir="rtl">
-        <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-800">اكتمل التسجيل بنجاح!</h2>
-            <p className="text-gray-500 mt-2">أصبح مستند KYC الخاص بك جاهزاً للمشاركة أو التنزيل.</p>
-        </div>
-        
-        {/* Hidden container for PDF generation */}
+        {/* Hidden container for PDF generation, rendered unconditionally */}
         <div className="absolute -left-[9999px] top-0">
              <PdfDocument userData={userData} docImages={docImages} signature={signature} onBack={onBack}/>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md border">
-            <h3 className="font-bold text-lg mb-2">ملخص البيانات</h3>
-            <p className="text-sm text-gray-600">تم استخدام هذه البيانات لإنشاء مستند KYC الخاص بك.</p>
-            <div className="mt-4 border-t pt-4">
-                 <p><strong className="text-gray-500">الاسم:</strong> {userData.fullName}</p>
-                 <p><strong className="text-gray-500">رقم الهوية:</strong> {userData.idNumber}</p>
-                 <p><strong className="text-gray-500">رقم الواتساب:</strong> {userData.whatsappNumber}</p>
+        {isGenerating ? (
+            <div className="flex flex-col items-center justify-center h-64">
+                <LoadingIcon className="w-12 h-12 text-orange-500 animate-spin" />
+                <p className="mt-4 text-lg font-semibold text-gray-700">جاري إنشاء المستند...</p>
             </div>
-        </div>
+        ) : (
+            <>
+                <div className="text-center mb-8">
+                    <h2 className="text-2xl font-bold text-gray-800">اكتمل التسجيل بنجاح!</h2>
+                    <p className="text-gray-500 mt-2">أصبح مستند KYC الخاص بك جاهزاً للمشاركة أو التنزيل.</p>
+                </div>
+                
+                <div className="bg-white p-6 rounded-lg shadow-md border">
+                    <h3 className="font-bold text-lg mb-2">ملخص البيانات</h3>
+                    <p className="text-sm text-gray-600">تم استخدام هذه البيانات لإنشاء مستند KYC الخاص بك.</p>
+                    <div className="mt-4 border-t pt-4">
+                        <p><strong className="text-gray-500">الاسم:</strong> {userData.fullName}</p>
+                        <p><strong className="text-gray-500">رقم الهوية:</strong> {userData.idNumber}</p>
+                        <p><strong className="text-gray-500">رقم الواتساب:</strong> {userData.whatsappNumber}</p>
+                    </div>
+                </div>
 
-      <div className="flex flex-col sm:flex-row-reverse items-center gap-4 pt-8">
-        <button onClick={handleShare} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
-            <span>مشاركة عبر واتساب</span>
-        </button>
-         <button onClick={handleDownload} disabled={!pdfFile} className="w-auto h-12 px-4 inline-flex items-center justify-center bg-gray-600 text-white font-bold rounded-lg shadow-md hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-400">
-            <DownloadIcon className="w-5 h-5"/>
-        </button>
-        <button type="button" onClick={onBack} className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
-          <ArrowRightIcon className="w-5 h-5 ml-2" />
-          <span>رجوع</span>
-        </button>
-      </div>
+                <div className="flex flex-col sm:flex-row-reverse items-center gap-4 pt-8">
+                    <button onClick={handleShare} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
+                        <span>مشاركة عبر واتساب</span>
+                    </button>
+                    <button onClick={handleDownload} disabled={!pdfFile} className="w-auto h-12 px-4 inline-flex items-center justify-center bg-gray-600 text-white font-bold rounded-lg shadow-md hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-400">
+                        <DownloadIcon className="w-5 h-5"/>
+                    </button>
+                    <button type="button" onClick={onBack} className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
+                    <ArrowRightIcon className="w-5 h-5 ml-2" />
+                    <span>رجوع</span>
+                    </button>
+                </div>
+            </>
+        )}
     </div>
   );
 };
