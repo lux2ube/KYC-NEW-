@@ -35,7 +35,7 @@ const schema = {
 };
 
 export const extractDataFromDocument = async (images: DocImages, docType: DocumentType): Promise<UserData> => {
-  const ai = new GoogleGenAI({ apiKey: "AIzaSyC_7oXl2Yd_X3S7IrC--khRqpl-b_oueF8" });
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const model = "gemini-2.5-pro";
   
   const parts: any[] = [];
