@@ -70,8 +70,8 @@ export const extractDataFromDocument = async (images: DocImages, docType: Docume
 
   const response = await ai.models.generateContent({
     model,
-    // fix: Corrected the structure of the `contents` parameter to be an object with a `parts` key.
-    contents: { parts },
+    // fix: The `contents` parameter expects an array of `Content` objects.
+    contents: [{ parts }],
     config: {
       responseMimeType: "application/json",
       responseSchema: schema,
