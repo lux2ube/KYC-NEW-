@@ -63,7 +63,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onSubmit }) => {
 
   return (
     <div className="animate-fade-in text-center" dir="rtl">
-      <h2 className="text-2xl font-bold text-gray-800">التحقق من الهوية</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-gray-800">التحقق من الهوية</h2>
       <p className="text-gray-500 mt-2">اختر نوع الهوية ثم قم بتصوير المستندات المطلوبة.</p>
 
       <div className="mt-8 grid grid-cols-2 gap-4 max-w-sm mx-auto">

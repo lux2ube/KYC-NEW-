@@ -19,7 +19,7 @@ const PhoneNumberForm: React.FC<PhoneNumberFormProps> = ({ initialData, onSubmit
     return (
         <div className="animate-fade-in" dir="rtl">
             <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-800">رقم الواتساب</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">رقم الواتساب</h2>
                 <p className="text-gray-500 mt-2">يرجى إدخال رقم الواتساب الخاص بك للتواصل.</p>
                 <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-100 mt-4">
                     <svg className="w-12 h-12 text-slate-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">

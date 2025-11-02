@@ -82,7 +82,7 @@ const DetailsForm: React.FC<DetailsFormProps> = ({ initialData, onSubmit, onBack
   return (
     <div className="animate-fade-in">
         <div className="text-center mb-8">
-            <h2 className="text-2xl font-bold text-gray-800">البيانات الشخصية</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-800">البيانات الشخصية</h2>
             <p className="text-gray-500 mt-2">يرجى مراجعة البيانات المستخرجة من المستند وتصحيحها إذا لزم الأمر.</p>
              <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-100 mt-4">
                 <svg className="w-12 h-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>

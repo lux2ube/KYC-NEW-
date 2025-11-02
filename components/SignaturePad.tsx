@@ -86,7 +86,7 @@ const SignaturePad: React.FC<SignaturePadProps> = ({ onSubmit, onBack }) => {
 
   return (
     <div className="animate-fade-in" dir="rtl">
-      <h2 className="text-2xl font-bold text-center text-gray-800">التوقيع الإلكتروني</h2>
+      <h2 className="text-xl sm:text-2xl font-bold text-center text-gray-800">التوقيع الإلكتروني</h2>
       <p className="text-center text-gray-500 mt-2">يرجى التوقيع في المربع أدناه ليتم اعتماده في المستند.</p>
       
       <div className="mt-8 w-full h-48 bg-gray-50 border border-gray-300 rounded-lg touch-none">

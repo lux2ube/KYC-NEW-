@@ -236,7 +236,7 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
         ) : (
             <>
                 <div className="text-center mb-8">
-                    <h2 className="text-2xl font-bold text-gray-800">اكتمل التسجيل بنجاح!</h2>
+                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">اكتمل التسجيل بنجاح!</h2>
                     <p className="text-gray-500 mt-2">أصبح مستند KYC الخاص بك جاهزاً للمشاركة أو التنزيل.</p>
                 </div>
                 

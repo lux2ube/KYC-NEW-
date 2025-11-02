@@ -89,13 +89,13 @@ function App() {
   return (
     <div className="bg-slate-50 min-h-screen font-[Tajawal,sans-serif] text-gray-800 flex flex-col items-center p-4 sm:p-8">
       <header className="mb-8 text-center">
-        <h1 className="text-4xl font-extrabold text-gray-800">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800">
             <span className="text-orange-500">Y Coin</span> Cash
         </h1>
         <p className="text-gray-500 mt-2">نظام التحقق من الهوية (KYC)</p>
       </header>
       
-      <main className="w-full max-w-4xl bg-white p-6 sm:p-10 rounded-2xl shadow-lg border border-gray-200">
+      <main className="w-full max-w-4xl bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-200">
         <StepIndicator currentStep={currentStep} totalSteps={STEPS.length} stepNames={STEPS} />
         <div className="mt-8 relative">
           {isLoading && (

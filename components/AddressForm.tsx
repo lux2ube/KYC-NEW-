@@ -46,7 +46,7 @@ const AddressForm: React.FC<AddressFormProps> = ({ initialData, onSubmit, onBack
     return (
         <div className="animate-fade-in" dir="rtl">
             <div className="text-center mb-8">
-                <h2 className="text-2xl font-bold text-gray-800">عنوان السكن الحالي</h2>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">عنوان السكن الحالي</h2>
                 <p className="text-gray-500 mt-2">يرجى إدخال تفاصيل عنوانك الحالي بدقة.</p>
                 <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-100 mt-4">
                      <svg className="w-12 h-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" /></svg>
