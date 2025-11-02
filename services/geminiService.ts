@@ -35,12 +35,10 @@ const schema = {
 };
 
 export const extractDataFromDocument = async (images: DocImages, docType: DocumentType): Promise<UserData> => {
-  // IMPORTANT: Add your Gemini API key here.
-  // To get a key, visit https://makersuite.google.com/app/apikey
-  const API_KEY = "YOUR_API_KEY_HERE";
+  const API_KEY = process.env.API_KEY;
 
-  if (API_KEY === "YOUR_API_KEY_HERE") {
-    throw new Error("يرجى إضافة مفتاح Gemini API الخاص بك في services/geminiService.ts");
+  if (!API_KEY) {
+    throw new Error("API key is missing. Please set it in your environment variables.");
   }
 
   const ai = new GoogleGenAI({ apiKey: API_KEY });
