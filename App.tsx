@@ -44,7 +44,11 @@ function App() {
       handleNextStep();
     } catch (e) {
       console.error(e);
-      setError('فشل استخراج البيانات. يرجى المحاولة مرة أخرى بصور أوضح.');
+      if (e instanceof Error) {
+        setError(e.message);
+      } else {
+        setError('حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.');
+      }
     } finally {
       setIsLoading(false);
     }

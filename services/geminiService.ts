@@ -35,52 +35,57 @@ const schema = {
 };
 
 export const extractDataFromDocument = async (images: DocImages, docType: DocumentType): Promise<UserData> => {
-  // Initialize the Gemini API client here to avoid issues on initial load.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  const model = "gemini-2.5-pro";
+  // IMPORTANT: Add your Gemini API key here.
+  // To get a key, visit https://makersuite.google.com/app/apikey
+  const API_KEY = "YOUR_API_KEY_HERE";
+
+  if (API_KEY === "YOUR_API_KEY_HERE") {
+    throw new Error("يرجى إضافة مفتاح Gemini API الخاص بك في services/geminiService.ts");
+  }
+
+  const ai = new GoogleGenAI({ apiKey: API_KEY });
+  const model = "gemini-2.5-flash";
   
   const parts: any[] = [];
-  let promptText = `
-    أنت خبير في التحقق من الهويات اليمنية. مهمتك هي استخراج المعلومات بدقة متناهية من صور المستندات المقدمة.
-    - تعامل مع اللغة العربية بعناية.
-    - قم بتحويل أي تواريخ هجرية إلى ميلادية بتنسيق YYYY-MM-DD.
-    - إذا كان الجنس غير مذكور، استنتجه من صورة الشخص أو اسمه.
-    - إذا كانت الجنسية غير مذكورة، افترض أنها "يمني".
-    - بالنسبة لمكان الميلاد، قم بتحليله لتحديد المحافظة والمديرية بدقة.
-    - أعد البيانات بتنسيق JSON صارم بناءً على المخطط المحدد.
-  `;
+  const systemInstruction = `أنت خبير في التحقق من الهويات اليمنية. مهمتك هي استخراج المعلومات بدقة متناهية من صور المستندات المقدمة. تعامل مع اللغة العربية بعناية. قم بتحويل أي تواريخ هجرية إلى ميلادية بتنسيق YYYY-MM-DD. إذا كان الجنس غير مذكور، استنتجه من صورة الشخص أو اسمه. إذا كانت الجنسية غير مذكورة، افترض أنها "يمني". بالنسبة لمكان الميلاد، قم بتحليله لتحديد المحافظة والمديرية بدقة. أعد البيانات بتنسيق JSON صارم بناءً على المخطط المحدد.`;
 
   if (docType === DocumentType.IDCard) {
     if (!images.front || !images.back) {
       throw new Error("Front and back images of ID card are required.");
     }
-    parts.push({ text: "صورة الوجه الأمامي:" });
+    parts.push({ text: "الرجاء استخراج البيانات من صور بطاقة الهوية اليمنية التالية. الوجه الأمامي:" });
     parts.push(fileToGenerativePart(images.front));
-    parts.push({ text: "صورة الوجه الخلفي:" });
+    parts.push({ text: "الوجه الخلفي:" });
     parts.push(fileToGenerativePart(images.back));
   } else if (docType === DocumentType.Passport) {
     if (!images.passport) {
       throw new Error("Passport image is required.");
     }
+    parts.push({ text: "الرجاء استخراج البيانات من صورة جواز السفر اليمني التالية:" });
     parts.push(fileToGenerativePart(images.passport));
   } else {
     throw new Error("Unsupported document type.");
   }
 
-  parts.unshift({ text: promptText });
-
   const response = await ai.models.generateContent({
     model,
-    // fix: The `contents` parameter expects an array of `Content` objects.
-    contents: [{ parts }],
+    contents: [{ parts: parts }],
     config: {
+      systemInstruction: systemInstruction,
       responseMimeType: "application/json",
       responseSchema: schema,
     },
   });
 
   const text = response.text.trim();
-  const jsonData = JSON.parse(text);
+  
+  let jsonData;
+  try {
+    jsonData = JSON.parse(text);
+  } catch (e) {
+    console.error("Failed to parse JSON from Gemini response:", text, e);
+    throw new Error("فشل في فهم الرد من الذكاء الاصطناعي. قد تكون الوثيقة غير واضحة أو أن الخدمة تواجه ضغطاً. يرجى المحاولة مرة أخرى.");
+  }
 
   return {
     fullName: jsonData.fullName || '',
