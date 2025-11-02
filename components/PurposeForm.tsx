@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { UserData } from '../types';
-import { ArrowLeftIcon, ArrowRightIcon } from './icons';
+import { UserData } from '../types.ts';
+import { ArrowLeftIcon, ArrowRightIcon } from './icons.tsx';
 
 interface PurposeFormProps {
   initialData: UserData;

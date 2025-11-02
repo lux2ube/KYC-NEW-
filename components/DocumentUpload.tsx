@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from 'react';
-import { DocumentType, DocImages } from '../types';
+import { DocumentType, DocImages } from '../types.ts';
 // fix: Replaced the unused `ArrowRightIcon` import with `ArrowLeftIcon` to resolve the "Cannot find name" error.
-import { UploadIcon, CheckIcon, ArrowLeftIcon } from './icons';
+import { UploadIcon, CheckIcon, ArrowLeftIcon } from './icons.tsx';
 
 interface DocumentUploadProps {
   onSubmit: (images: DocImages, docType: DocumentType) => void;

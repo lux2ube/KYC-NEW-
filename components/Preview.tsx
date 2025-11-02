@@ -1,7 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { UserData, DocImages } from '../types';
-import { ArrowRightIcon, DownloadIcon } from './icons';
-import { LoadingIcon } from './icons';
+import { UserData, DocImages } from '../types.ts';
+import { ArrowRightIcon, DownloadIcon } from './icons.tsx';
+import { LoadingIcon } from './icons.tsx';
 
 declare var jspdf: any;
 declare var html2canvas: any;

@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
-import { UserData, DocImages, DocumentType } from './types';
-import { extractDataFromDocument } from './services/geminiService';
+import { UserData, DocImages, DocumentType } from './types.ts';
+import { extractDataFromDocument } from './services/geminiService.ts';
 
-import DocumentUpload from './components/DocumentUpload';
-import DetailsForm from './components/DetailsForm';
-import PhoneNumberForm from './components/PhoneNumberForm';
-import AddressForm from './components/AddressForm';
-import PurposeForm from './components/PurposeForm';
-import SignaturePad from './components/SignaturePad';
-import Preview from './components/Preview';
-import StepIndicator from './components/StepIndicator';
-import { LoadingIcon } from './components/icons';
+import DocumentUpload from './components/DocumentUpload.tsx';
+import DetailsForm from './components/DetailsForm.tsx';
+import PhoneNumberForm from './components/PhoneNumberForm.tsx';
+import AddressForm from './components/AddressForm.tsx';
+import PurposeForm from './components/PurposeForm.tsx';
+import SignaturePad from './components/SignaturePad.tsx';
+import Preview from './components/Preview.tsx';
+import StepIndicator from './components/StepIndicator.tsx';
+import { LoadingIcon } from './components/icons.tsx';
 
 const initialUserData: UserData = {
   fullName: '', idNumber: '', dateOfBirth: '', placeOfIssue: '', dateOfIssue: '',

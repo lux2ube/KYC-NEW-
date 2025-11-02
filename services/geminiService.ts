@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { DocImages, DocumentType, UserData } from '../types';
+import { DocImages, DocumentType, UserData } from '../types.ts';
 
 /**
  * Converts a base64 data URL into a format suitable for the Gemini API.

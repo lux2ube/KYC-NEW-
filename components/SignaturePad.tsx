@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from 'react';
-import { ArrowRightIcon, ArrowLeftIcon } from './icons';
+import { ArrowRightIcon, ArrowLeftIcon } from './icons.tsx';
 
 interface SignaturePadProps {
   onSubmit: (signatureDataUrl: string) => void;

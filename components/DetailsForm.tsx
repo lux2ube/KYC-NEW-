@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { UserData } from '../types';
-import { YEMEN_LOCATIONS } from '../data/yemenLocations';
-import { ArrowLeftIcon, ArrowRightIcon } from './icons';
+import { UserData } from '../types.ts';
+import { YEMEN_LOCATIONS } from '../data/yemenLocations.ts';
+import { ArrowLeftIcon, ArrowRightIcon } from './icons.tsx';
 
 interface DetailsFormProps {
   initialData: UserData;
