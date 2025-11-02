@@ -1,7 +1,5 @@
 {
   "name": "KYC Onboarding Assistant",
   "description": "A secure and streamlined Know Your Customer (KYC) application. Users can upload their ID or passport, have details automatically extracted using AI, provide a digital signature, and generate a PDF for bank account opening, which can then be shared via WhatsApp.",
-  "requestFramePermissions": [
-    "camera"
-  ]
+  "requestFramePermissions": []
 }
