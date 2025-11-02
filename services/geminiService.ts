@@ -1,6 +1,9 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { DocImages, DocumentType, UserData } from '../types.ts';
 
+// Centralize the Gemini API client initialization.
+const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
 /**
  * Converts a base64 data URL into a format suitable for the Gemini API.
  * @param dataUrl The base64 data URL (e.g., "data:image/jpeg;base64,...").
@@ -35,7 +38,6 @@ const schema = {
 };
 
 export const extractDataFromDocument = async (images: DocImages, docType: DocumentType): Promise<UserData> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const model = "gemini-2.5-pro";
   
   const parts: any[] = [];
