@@ -102,34 +102,46 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ u
             <div id="pdf-page-1" className="p-10 w-[210mm] bg-white flex flex-col text-black">
                 <PdfHeader title="نموذج اعرف عميلك المتكامل (KYC)" />
                 <main className="grow text-xs">
-                    <FormSection title="البيانات الشخصية وبيانات الهوية">
-                        <Field label="الاسم الكامل" value={userData.fullName} fullWidth />
-                        <Field label="الجنس" value={userData.gender} />
-                        <Field label="الجنسية" value={userData.nationality} />
-                        <Field label="تاريخ الميلاد" value={userData.dateOfBirth} />
-                        <Field label="مكان الميلاد" value={`${userData.birthGovernorate} - ${userData.birthDistrict}`} />
-                        <Field label="نوع الهوية" value={docImages.passport ? "جواز سفر" : "بطاقة شخصية"} />
-                        <Field label="رقم الهوية" value={userData.idNumber} />
-                        <Field label="مكان الإصدار" value={userData.placeOfIssue} />
-                        <Field label="تاريخ الإصدار" value={userData.dateOfIssue} />
-                        <Field label="تاريخ الانتهاء" value={userData.expiryDate} />
-                    </FormSection>
+                    <div className="flex gap-8">
+                        {/* Right Column: Personal Info & Photo */}
+                        <div className="w-2/3 space-y-3">
+                            <FormSection title="البيانات الشخصية وبيانات الهوية">
+                                <Field label="الاسم الكامل" value={userData.fullName} fullWidth />
+                                <Field label="الجنس" value={userData.gender} />
+                                <Field label="الجنسية" value={userData.nationality} />
+                                <Field label="تاريخ الميلاد" value={userData.dateOfBirth} />
+                                <Field label="مكان الميلاد" value={`${userData.birthGovernorate} - ${userData.birthDistrict}`} />
+                                <Field label="نوع الهوية" value={docImages.passport ? "جواز سفر" : "بطاقة شخصية"} />
+                                <Field label="رقم الهوية" value={userData.idNumber} />
+                                <Field label="مكان الإصدار" value={userData.placeOfIssue} />
+                                <Field label="تاريخ الإصدار" value={userData.dateOfIssue} />
+                                <Field label="تاريخ الانتهاء" value={userData.expiryDate} />
+                            </FormSection>
+                             <FormSection title="البيانات المهنية والمالية">
+                                <Field label="المهنة / الوظيفة" value={userData.occupation} />
+                                <Field label="مصدر الدخل" value={userData.sourceOfFunds} />
+                                <Field label="الغرض من فتح الحساب" value={userData.accountPurpose} fullWidth/>
+                            </FormSection>
+                        </div>
+                        {/* Left Column: Photo & Contact */}
+                        <div className="w-1/3 space-y-3">
+                            {selfieImage && (
+                                <div className="text-center">
+                                    <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md w-full h-auto border-4 border-slate-100 p-1" />
+                                    <p className="text-[10px] text-gray-500 mt-2 font-semibold">صورة التحقق الشخصية</p>
+                                </div>
+                            )}
+                             <FormSection title="بيانات التواصل والسكن">
+                                <Field label="العنوان الدائم" value={`${userData.addressGovernorate}, ${userData.addressDistrict}, ${userData.addressStreet}`} fullWidth />
+                                <Field label="رقم الجوال (واتساب)" value={userData.whatsappNumber} fullWidth />
+                                <Field label="البريد الإلكتروني" value="" fullWidth />
+                            </FormSection>
+                        </div>
+                    </div>
 
-                    <FormSection title="بيانات التواصل والسكن">
-                        <Field label="العنوان الدائم" value={`${userData.addressGovernorate}, ${userData.addressDistrict}, ${userData.addressStreet}`} fullWidth />
-                        <Field label="رقم الجوال (واتساب)" value={userData.whatsappNumber} />
-                        <Field label="البريد الإلكتروني" value="" />
-                    </FormSection>
-
-                    <FormSection title="البيانات المهنية والمالية">
-                        <Field label="المهنة / الوظيفة" value={userData.occupation} />
-                        <Field label="مصدر الدخل" value={userData.sourceOfFunds} />
-                        <Field label="الغرض من فتح الحساب" value={userData.accountPurpose} fullWidth/>
-                    </FormSection>
-                    
                     <div className="mt-6 pt-4 border-t-2 border-slate-200 text-xs bg-slate-50 p-4 rounded-lg">
                         <p className="font-bold text-sm">إقرار العميل:</p>
-                        <p className="mt-2 leading-relaxed">أقر أنا الموقع أدناه، <strong>{userData.fullName}</strong>، بأن جميع البيانات والمعلومات المقدمة في هذا النموذج صحيحة وكاملة ومحدثة، وأتعهد بإبلاغكم فور حدوث أي تغييرات عليها. كما أقر بأنني المستفيد الحقيقي والنهائي من الحساب. وأتحمل المسؤولية القانونية الكاملة المترتبة على صحة هذه البيانات.</p>
+                        <p className="mt-2 leading-relaxed">أقر أنا الموقع أدناه، <strong>{userData.fullName}</strong>، بأن جميع البيانات والمعلومات المقدمة في هذا النموذج صحيحة وكاملة ومحدثة، وأتعهد بإبلاغكم فور حدوث أي تغييرات عليها. وأتحمل المسؤولية القانونية الكاملة المترتبة على صحة هذه البيانات.</p>
                         <div className="flex justify-between items-end mt-6">
                             <div>
                                 <p className="font-semibold text-gray-600">اسم العميل:</p>
@@ -148,8 +160,33 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ u
                 </main>
             </div>
             
-            {/* Page 2: Terms and Conditions Summary */}
-            <div id="pdf-page-2" className="p-10 w-[210mm] bg-white flex flex-col text-black">
+            {/* Page 2: Beneficial Owner Declaration */}
+            <div id="pdf-page-beneficial" className="p-10 w-[210mm] bg-white flex flex-col text-black">
+                <PdfHeader title="إقرار المستفيد الحقيقي" />
+                <main className="grow mt-4 flex flex-col justify-between">
+                    <div className="text-sm leading-loose bg-slate-50 p-6 rounded-lg border border-slate-200">
+                        <p className="mb-6">أقر أنا الموقع أدناه، <strong>{userData.fullName}</strong>، بصفتي الشخصية، بأنني المستفيد الحقيقي والنهائي من الحساب الذي سيتم فتحه لدى Y Coin Cash، وأنني أتصرف لحسابي الخاص وليس بصفتي وكيلاً أو ممثلاً أو بالنيابة عن أي شخص أو جهة أخرى.</p>
+                        <p>كما أتعهد بإبلاغ Y Coin Cash كتابيًا وفورًا في حال تغيرت هذه الصفة في المستقبل، وأتحمل كامل المسؤولية القانونية المترتبة على صحة هذا الإقرار.</p>
+                    </div>
+                    <div className="mt-12 pt-6 border-t-2 border-slate-200">
+                        <div className="flex items-end justify-between">
+                            <div>
+                                <p className="font-semibold text-gray-600">اسم العميل:</p>
+                                <p className="font-bold text-lg text-gray-800">{userData.fullName}</p>
+                                <p className="font-semibold text-gray-600 mt-4">التاريخ:</p>
+                                <p className="font-bold text-lg text-gray-800">{today}</p>
+                            </div>
+                            <div className="text-center">
+                                <p className="font-semibold text-gray-600">توقيع العميل:</p>
+                                <img src={signature} alt="Signature" className="h-20 w-48 object-contain mt-1 bg-white border rounded-md p-1" />
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+
+            {/* Page 3: Terms and Conditions Summary */}
+            <div id="pdf-page-terms" className="p-10 w-[210mm] bg-white flex flex-col text-black">
                 <PdfHeader title="ملخص الشروط والأحكام وإقرار الموافقة" />
                 <main className="grow mt-4 text-[10px] text-justify space-y-2 leading-normal">
                     <p className="text-sm text-center font-bold mb-4">بموجب التوقيع على هذا المستند، فإنك توافق على الشروط والأحكام الكاملة لـ Y Coin Cash. النقاط التالية هي ملخص لأهم البنود:</p>
@@ -219,17 +256,17 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ u
 const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfieImage, onBack, onStartOver }) => {
   const [isGenerating, setIsGenerating] = useState(true);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
-  const [shareError, setShareError] = useState<string | null>(null);
-  const [canShare, setCanShare] = useState(false);
+  const [actionError, setActionError] = useState<string | null>(null);
 
   useEffect(() => {
     const generatePdf = async () => {
         setIsGenerating(true);
+        setActionError(null);
         try {
             const { jsPDF } = jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
             
-            const pageIds = ['pdf-page-1', 'pdf-page-2'];
+            const pageIds = ['pdf-page-1', 'pdf-page-beneficial', 'pdf-page-terms'];
             if (selfieImage) pageIds.push('pdf-page-selfie');
             if (docImages.front) pageIds.push('pdf-page-id-front');
             if (docImages.back) pageIds.push('pdf-page-id-back');
@@ -284,15 +321,9 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
             const pdfBlob = pdf.output('blob');
             const file = new File([pdfBlob], pdfFileName, { type: 'application/pdf' });
             setPdfFile(file);
-
-            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
-                setCanShare(true);
-            } else {
-                setCanShare(false);
-            }
         } catch (error) {
             console.error("Failed to generate PDF:", error);
-            setShareError("حدث خطأ أثناء إنشاء ملف PDF.");
+            setActionError("حدث خطأ أثناء إنشاء ملف PDF.");
         } finally {
             setIsGenerating(false);
         }
@@ -306,33 +337,40 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
   }, [userData, docImages, signature, selfieImage]); 
 
   const handleShare = async () => {
-    if (!pdfFile) return;
-    setShareError(null);
+    if (!pdfFile) {
+        setActionError("الملف غير جاهز بعد، يرجى الانتظار قليلاً.");
+        return;
+    }
+    setActionError(null);
 
-    try {
-        if (navigator.share && navigator.canShare && navigator.canShare({ files: [pdfFile] })) {
-             await navigator.share({
-                title: `مستند KYC لـ ${userData.fullName}`,
-                text: `هذا هو مستند KYC لـ ${userData.fullName}.`,
-                files: [pdfFile],
-            });
-        } else {
-            setShareError('المشاركة غير مدعومة على هذا المتصفح. سيتم تنزيل الملف.');
-            handleDownload();
+    const shareData = {
+        title: `مستند KYC لـ ${userData.fullName}`,
+        text: `هذا هو مستند KYC لـ ${userData.fullName}.`,
+        files: [pdfFile],
+    };
+    
+    if (navigator.share && navigator.canShare?.(shareData)) {
+        try {
+            await navigator.share(shareData);
+        } catch (error) {
+            if (error instanceof DOMException && error.name === 'AbortError') {
+                console.log("Share action was cancelled by the user.");
+            } else {
+                console.error("Failed to share PDF:", error);
+                setActionError("فشلت المشاركة. يرجى محاولة تنزيل الملف بدلاً من ذلك.");
+            }
         }
-    } catch (error) {
-         if (error instanceof DOMException && error.name === 'AbortError') {
-            console.log("Share action was cancelled by the user.");
-        } else {
-            console.error("Failed to share PDF:", error);
-            setShareError("فشلت المشاركة. سيتم تنزيل الملف بدلاً من ذلك.");
-            handleDownload();
-        }
+    } else {
+        setActionError("المشاركة المباشرة غير مدعومة على هذا المتصفح. يرجى تنزيل الملف ومشاركته يدوياً.");
     }
   };
 
   const handleDownload = () => {
-    if (!pdfFile) return;
+    if (!pdfFile) {
+        setActionError("الملف غير جاهز بعد، يرجى الانتظار قليلاً.");
+        return;
+    }
+    setActionError(null);
     const url = URL.createObjectURL(pdfFile);
     const a = document.createElement('a');
     a.href = url;
@@ -373,29 +411,22 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
                     </div>
                 </div>
 
-                {shareError && (
-                    <div className="mt-4 p-3 bg-yellow-100 border border-yellow-400 text-yellow-800 rounded-lg text-center text-sm" role="alert">
-                        {shareError}
+                {actionError && (
+                    <div className="mt-6 p-3 bg-yellow-100 border border-yellow-400 text-yellow-800 rounded-lg text-center text-sm" role="alert">
+                        {actionError}
                     </div>
                 )}
                 
-                <div className="mt-8 flex flex-col sm:flex-row-reverse items-center gap-4">
-                    {canShare ? (
-                        <button onClick={handleShare} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
-                            <span>مشاركة عبر واتساب</span>
-                            <WhatsAppIcon className="w-6 h-6 mr-2" />
-                        </button>
-                    ) : null}
-                    <button onClick={handleDownload} disabled={!pdfFile} className={`w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 text-white font-bold rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-400 ${canShare ? 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500' : 'bg-green-500 hover:bg-green-600 focus:ring-green-500'}`}>
+                <div className="mt-6 flex flex-col sm:flex-row-reverse items-center gap-4">
+                    <button onClick={handleShare} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
+                        <span>مشاركة عبر واتساب</span>
+                        <WhatsAppIcon className="w-6 h-6 mr-2" />
+                    </button>
+                    <button onClick={handleDownload} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-gray-600 text-white font-bold rounded-lg shadow-md hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-400">
                         <span>تنزيل PDF</span>
                         <DownloadIcon className="w-5 h-5 mr-2" />
                     </button>
                 </div>
-                {!canShare && !isGenerating && pdfFile && (
-                    <p className="mt-4 text-xs text-center text-gray-500 bg-gray-100 p-2 rounded-lg">
-                        <strong>نصيحة:</strong> للمشاركة على واتساب، قم بتنزيل الملف أولاً ثم أرفقه يدوياً في المحادثة.
-                    </p>
-                )}
                  <div className="mt-4 flex flex-col sm:flex-row-reverse items-center gap-4">
                     <button type="button" onClick={onStartOver} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
                         <RefreshIcon className="w-5 h-5 ml-2" />
