@@ -66,32 +66,55 @@ const FormSection: React.FC<{ title: string; children: React.ReactNode}> = ({ ti
     </div>
 );
 
-const summarizedTerms = [
-    {
-        title: "1. التحقق من الهوية (KYC)",
-        text: "بتقديمك للمستندات، فإنك توافق على جمعها وحفظها لأغراض التحقق من الهوية (KYC) والامتثال للقوانين المعمول بها لمكافحة غسل الأموال."
+const fullTermsAndConditions = {
+    definitions: {
+        title: "ثالثًا: التعريفات",
+        points: [
+            "المنصة / نحن / الموقع: يُقصد بها منصة YCoinCash.com، وتشمل الموقع الرسمي www.ycoincash.com وجميع قنوات الاتصال التابعة لها.",
+            "العميل / المستخدم / أنت: الشخص الطبيعي أو الاعتباري الذي يطلب فتح حساب أو يستخدم خدمات المنصة.",
+            "الخدمات: جميع عمليات بيع وشراء وتحويل العملات الرقمية والخدمات المساندة لها.",
+            "العملات الرقمية: الأصول الرقمية المعتمدة على تقنية البلوك تشين مثل (Bitcoin، Ethereum وغيرها)."
+        ]
     },
-    {
-        title: "2. مسؤولية المستخدم",
-        text: "أنت تقر بأنك المستفيد الفعلي من الخدمة، وأن لديك الخبرة الكافية في مجال العملات الرقمية وتدرك المخاطر المرتبطة بها. أنت مسؤول عن حماية حساباتك وعناوين المحافظ الرقمية الخاصة بك."
+    legalStatus: {
+        title: "رابعًا: الوضع القانوني للمنصة",
+        content: "تعمل منصة YCoinCash.com كمزود خدمات رقمية عبر الإنترنت في الجمهورية اليمنية، ولا تُمارس أي نشاط مصرفي أو تمويلي إلا بعد الحصول على التراخيص اللازمة من الجهات المختصة. ويُعد توقيعي على هذه الوثيقة إقرارًا مني بفهم هذا الوضع القانوني وموافقتي على التعامل وفقه."
     },
-    {
-        title: "3. تحذير من الاحتيال",
-        text: "نحذر بشدة من تحويل أي أموال إلى جهات تروج لأرباح غير واقعية أو أنشطة احتيالية. أي تحويل خارج منصتنا الرسمية يتم على مسؤوليتك الخاصة."
+    mainAgreement: {
+        title: "خامسًا: بنود الاتفاق الأساسية",
+        points: [
+            "أوافق على أن جميع معاملاتي تتم حصريًا عبر الموقع الرسمي www.ycoincash.com أو القنوات المعتمدة المذكورة فيه.",
+            "أتحمل المسؤولية الكاملة في حال التعامل مع أي جهة تنتحل هوية المنصة أو تستخدم شعارها دون تصريح.",
+            "أقرّ بأن جميع بياناتي صحيحة ومطابقة للوثائق المقدمة.",
+            "أوافق على استخدام رقم واتساب الخاص بي كوسيلة تعامل مالي رسمية، وتُعدّ أي مراسلات أو طلبات صادرة منه ملزمة لي قانونيًا.",
+            "أوافق على تقديم هويتي أو أي وثائق إضافية متى ما طلبت المنصة ذلك ضمن إجراءات (KYC) و(MAL).",
+            "أقرّ بأنني المستفيد الفعلي من الحساب وليس نيابة عن أي طرف ثالث.",
+            "أوافق على أنني أستخدم فقط عنوان المحفظة الشخصية الخاصة بي عند الإيداع أو السحب، وأتحمل المسؤولية عن أي خطأ في العنوان.",
+            "أُدرك أن جميع المعاملات الرقمية غير قابلة للإلغاء أو الاسترجاع بعد إتمامها.",
+            "أقرّ بمعرفتي الكاملة بمخاطر تقلبات العملات الرقمية، وأن المنصة لا تقدم أي نصائح استثمارية.",
+            "أوافق على حق المنصة في تجميد أي مبالغ في حال الاشتباه بنشاط احتيالي أو مخالف للقانون، والتعاون مع الجهات الرسمية عند الحاجة.",
+            "أوافق على أن خدمات المنصة تُقدّم “كما هي” دون ضمانات، وأن المنصة غير مسؤولة عن أي خسائر ناتجة عن أخطاء المستخدم أو السوق.",
+            "أوافق على أن القوانين اليمنية هي الحاكمة، والمحاكم اليمنية هي المختصة بالنظر في أي نزاع ينشأ عن هذا الاتفاق."
+        ]
     },
-    {
-        title: "4. عدم إمكانية استرجاع المبالغ",
-        text: "نظراً لطبيعة تقنية البلوك تشين، لا يمكن عكس المعاملات أو استرجاع أي مبالغ بعد إتمام التحويل. تقع على عاتقك مسؤولية التأكد من صحة البيانات المقدمة."
+    userObligations: {
+        title: "سادسًا: التزامات المستخدم",
+        points: [
+            "الحفاظ على سرية بيانات الحساب وأمن المحفظة الرقمية.",
+            "عدم استخدام المنصة لأي أنشطة مخالفة للقانون اليمني أو لأنظمة مكافحة غسل الأموال وتمويل الإرهاب.",
+            "الإبلاغ الفوري عن أي نشاط مشبوه أو اختراق."
+        ]
     },
-    {
-        title: "5. حق تجميد الأموال المشبوهة",
-        text: "نحتفظ بالحق في تجميد أي مبالغ إذا اشتبهنا في وجود نشاط غير قانوني أو مخالف لشروطنا، وقد نقوم بإحالة الأمر للجهات القانونية المختصة."
+    amendments: {
+        title: "سابعًا: التعديلات",
+        content: "تحتفظ المنصة بحقها في تعديل الشروط والأحكام دون إشعار مسبق، وتُعتبر التعديلات سارية فور نشرها على الموقع الرسمي. استمرار العميل في استخدام الخدمات بعد ذلك يُعد موافقة ضمنية على التعديلات."
     },
-    {
-        title: "6. القانون الحاكم",
-        text: "تخضع جميع التعاملات وتفسر وفقاً للقوانين النافذة في الجمهورية اليمنية، وأي نزاع يكون من اختصاص المحاكم اليمنية."
+    officialCommunication: {
+        title: "ثامنًا: التواصل الرسمي",
+        content: "لأي استفسار أو بلاغ رسمي، يتم التواصل عبر الموقع الرسمي فقط: www.ycoincash.com. ولا تُعتمد أي قنوات أخرى ما لم تُذكر صراحةً في الموقع."
     }
-];
+};
+
 
 const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ userData, docImages, signature, selfieImage }) => {
     const today = new Date().toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: '2-digit', day: '2-digit' });
@@ -183,29 +206,69 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ u
                 </main>
             </div>
 
-            {/* Page 3: Terms and Conditions Summary */}
+            {/* Page 3: Terms and Conditions */}
             <div id="pdf-page-terms" className="p-10 w-[210mm] bg-white flex flex-col text-black">
-                <PdfHeader title="ملخص الشروط والأحكام وإقرار الموافقة" />
-                <main className="grow mt-4 text-[10px] text-justify space-y-2 leading-normal">
-                    <p className="text-sm text-center font-bold mb-4">بموجب التوقيع على هذا المستند، فإنك توافق على الشروط والأحكام الكاملة لـ Y Coin Cash. النقاط التالية هي ملخص لأهم البنود:</p>
-                    <div className="space-y-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
-                        {summarizedTerms.map((term, index) => (
-                            <div key={index}>
-                                <h4 className="font-bold text-xs">{term.title}</h4>
-                                <p className="text-[9px]">{term.text}</p>
-                            </div>
-                        ))}
-                    </div>
-                     <div className="pt-6 mt-6 border-t border-slate-200 bg-orange-50 p-4 rounded-lg text-orange-900">
-                        <p className="font-bold text-base">إقرار الموافقة على الشروط والأحكام:</p>
-                        <p className="mt-2">أقر أنا الموقع أدناه، <strong>{userData.fullName}</strong>، حامل الهوية رقم <strong>{userData.idNumber}</strong>، بأنني قرأت وفهمت ووافقت على جميع الشروط والأحكام الكاملة للخدمة، والتي يعتبر هذا الملخص جزءاً منها، وأفوض الشركة بتنفيذ كافة العمليات والخدمات وفقاً لذلك. وهذا إقرار نهائي مني لا رجعة فيه.</p>
-                        <div className="mt-6 flex items-end justify-between">
+                <PdfHeader title="نموذج اتفاقية فتح حساب" />
+                <main className="grow mt-4 text-[9px] text-justify space-y-2 leading-relaxed">
+                    <h3 className="text-sm text-center font-bold mb-4 text-gray-700">
+                        اتفاقية فتح حساب لدى منصة كوين كاش (YCoinCash.com) - تاريخ النفاذ: 20 / 11 / 2022م
+                    </h3>
+
+                    <div className="grid grid-cols-2 gap-x-6">
+                        {/* Left Column */}
+                        <div className="space-y-3">
                             <div>
-                                <p className="font-semibold">اسم العميل: <span className="font-bold">{userData.fullName}</span></p>
-                                <p className="font-semibold mt-2">التاريخ: <span className="font-bold">{today}</span></p>
+                                <h4 className="font-bold text-xs mb-1 border-b border-slate-200 pb-1">{fullTermsAndConditions.definitions.title}</h4>
+                                <ol className="list-decimal list-inside space-y-1 pr-2">
+                                    {fullTermsAndConditions.definitions.points.map((p, i) => <li key={i}>{p}</li>)}
+                                </ol>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-xs mb-1 border-b border-slate-200 pb-1">{fullTermsAndConditions.legalStatus.title}</h4>
+                                <p>{fullTermsAndConditions.legalStatus.content}</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-xs mb-1 border-b border-slate-200 pb-1">{fullTermsAndConditions.userObligations.title}</h4>
+                                <ul className="list-disc list-inside space-y-1 pr-2">
+                                    {fullTermsAndConditions.userObligations.points.map((p, i) => <li key={i}>{p}</li>)}
+                                </ul>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-xs mb-1 border-b border-slate-200 pb-1">{fullTermsAndConditions.amendments.title}</h4>
+                                <p>{fullTermsAndConditions.amendments.content}</p>
+                            </div>
+                            <div>
+                                <h4 className="font-bold text-xs mb-1 border-b border-slate-200 pb-1">{fullTermsAndConditions.officialCommunication.title}</h4>
+                                <p>{fullTermsAndConditions.officialCommunication.content}</p>
+                            </div>
+                        </div>
+
+                        {/* Right Column */}
+                        <div className="space-y-3">
+                            <div>
+                                <h4 className="font-bold text-xs mb-1 border-b border-slate-200 pb-1">{fullTermsAndConditions.mainAgreement.title}</h4>
+                                <ol className="list-decimal list-inside space-y-1 pr-2">
+                                    {fullTermsAndConditions.mainAgreement.points.map((p, i) => <li key={i}>{p}</li>)}
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    {/* Signature Block */}
+                    <div className="pt-4 mt-4 border-t-2 border-slate-300">
+                        <h4 className="font-bold text-base text-center mb-2">تاسعًا: توقيع العميل</h4>
+                        <p className="text-center text-xs">أقرّ بموافقتي الكاملة على جميع البنود الواردة أعلاه، وأن توقيعي أدناه يُعدّ موافقة رسمية وملزمة قانونيًا.</p>
+                        <div className="mt-4 flex items-end justify-between">
+                            <div>
+                                <p className="font-semibold text-gray-600">الاسم:</p>
+                                <p className="font-bold text-base text-gray-800">{userData.fullName}</p>
+                            </div>
+                            <div>
+                                <p className="font-semibold text-gray-600">التاريخ:</p>
+                                <p className="font-bold text-base text-gray-800">{today}</p>
                             </div>
                             <div className="text-center">
-                                <p className="font-semibold">توقيع العميل:</p>
+                                <p className="font-semibold text-gray-600">التوقيع:</p>
                                 <img src={signature} alt="Signature" className="h-16 w-40 object-contain mt-1 bg-white border rounded-md p-1" />
                             </div>
                         </div>
