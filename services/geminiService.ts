@@ -35,13 +35,7 @@ const schema = {
 };
 
 export const extractDataFromDocument = async (images: DocImages, docType: DocumentType): Promise<UserData> => {
-  const API_KEY = process.env.API_KEY;
-
-  if (!API_KEY) {
-    throw new Error("API key is missing. Please set it in your environment variables.");
-  }
-
-  const ai = new GoogleGenAI({ apiKey: API_KEY });
+  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
   const model = "gemini-2.5-flash";
   
   const parts: any[] = [];
