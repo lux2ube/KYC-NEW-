@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { UserData } from '../types.ts';
 import { YEMEN_LOCATIONS } from '../data/yemenLocations.ts';
 import { ArrowLeftIcon, ArrowRightIcon } from './icons.tsx';
+import { InputField, SelectField } from './FormControls.tsx';
 
 interface AddressFormProps {
   initialData: UserData;
@@ -53,25 +54,16 @@ const AddressForm: React.FC<AddressFormProps> = ({ initialData, onSubmit, onBack
                 </div>
             </div>
              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 sm:gap-y-4">
-                    <div className="md:col-span-2">
-                        <label htmlFor="addressGovernorate" className="block text-sm font-medium text-gray-700 mb-1">المحافظة</label>
-                        <select id="addressGovernorate" name="addressGovernorate" value={formData.addressGovernorate} onChange={handleChange} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-lg bg-white">
-                            <option value="">اختر محافظة...</option>
-                            {governorates.map(gov => <option key={gov} value={gov}>{gov}</option>)}
-                        </select>
-                    </div>
-                    <div>
-                        <label htmlFor="addressDistrict" className="block text-sm font-medium text-gray-700 mb-1">المديرية</label>
-                         <select id="addressDistrict" name="addressDistrict" value={formData.addressDistrict} onChange={handleChange} disabled={!formData.addressGovernorate} className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-lg bg-white disabled:bg-gray-100">
-                           <option value="">اختر مديرية...</option>
-                           {districts.map(dist => <option key={dist} value={dist}>{dist}</option>)}
-                        </select>
-                    </div>
-                    <div>
-                         <label htmlFor="addressStreet" className="block text-sm font-medium text-gray-700 mb-1">الشارع / الحي</label>
-                        <input type="text" id="addressStreet" name="addressStreet" value={formData.addressStreet} onChange={handleChange} className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm" />
-                    </div>
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 sm:gap-y-6">
+                    <SelectField label="المحافظة" name="addressGovernorate" value={formData.addressGovernorate} onChange={handleChange} className="md:col-span-2">
+                        <option value="">اختر محافظة...</option>
+                        {governorates.map(gov => <option key={gov} value={gov}>{gov}</option>)}
+                    </SelectField>
+                    <SelectField label="المديرية" name="addressDistrict" value={formData.addressDistrict} onChange={handleChange} disabled={!formData.addressGovernorate}>
+                       <option value="">اختر مديرية...</option>
+                       {districts.map(dist => <option key={dist} value={dist}>{dist}</option>)}
+                    </SelectField>
+                    <InputField label="الشارع / الحي" name="addressStreet" value={formData.addressStreet} onChange={handleChange} />
                 </div>
                 <div className="flex flex-col sm:flex-row-reverse gap-4 pt-6">
                     <button type="submit" disabled={!formData.addressGovernorate || !formData.addressDistrict || !formData.addressStreet} className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 bg-orange-500 text-white font-bold rounded-lg shadow-md hover:bg-orange-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:bg-gray-300">

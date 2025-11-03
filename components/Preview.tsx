@@ -66,13 +66,6 @@ const FormSection: React.FC<{ title: string; children: React.ReactNode}> = ({ ti
     </div>
 );
 
-const PdfFooter: React.FC<{ page: number; total: number }> = ({ page, total }) => (
-     <footer className="text-center text-[9px] text-gray-400 py-3 border-t border-slate-200 mt-auto">
-        <p>This document is confidential. &copy; {new Date().getFullYear()} Y Coin Cash | ycoincash.com.</p>
-        <p>Page {page} of {total}</p>
-    </footer>
-);
-
 const termsAndConditionsText = {
     col1: [
         "1. التعريفات: 1. الموقع / نحن / لنا: يُقصد بها منصة Ycoincash.com، وتشمل الموقع الإلكتروني الرسمي www.ycoincash.com وجميع قنوات الاتصال التابعة لها. 2. المستخدم / أنت: كل شخص طبيعي أو اعتباري يتصفح الموقع أو يتواصل معنا أو يستفيد من خدماتنا بأي شكلٍ من الأشكال. 3. الخدمات: كافة الأنشطة أو المعاملات المتعلقة ببيع أو شراء أو تداول العملات الرقمية، وأي خدمات أخرى يوفرها الموقع. 4. العملات الرقمية: أي أصول رقمية قائمة على تقنية البلوك تشين أو ما ينوب عنها (مثل البيتكوين والإيثيريوم وغيرها).",
@@ -99,13 +92,13 @@ const termsAndConditionsText = {
     ]
 };
 
-const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, docImages, signature, selfieImage }) => {
+const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ userData, docImages, signature, selfieImage }) => {
     const today = new Date().toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
     return (
         <div className="bg-white text-gray-900 font-[Tajawal,sans-serif]" dir="rtl">
             {/* Page 1: KYC Form */}
-            <div id="pdf-page-1" className="p-10 w-[210mm] h-[297mm] bg-white flex flex-col text-black">
+            <div id="pdf-page-1" className="p-10 w-[210mm] bg-white flex flex-col text-black">
                 <PdfHeader title="نموذج اعرف عميلك (KYC) لعميل شخصي" />
                 <main className="grow text-xs">
                     <FormSection title="البيانات الشخصية للعميل">
@@ -152,11 +145,10 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, do
                         </div>
                     </div>
                 </main>
-                <PdfFooter page={1} total={4} />
             </div>
 
             {/* Page 2: Beneficiary Form */}
-            <div id="pdf-page-2" className="p-10 w-[210mm] h-[297mm] bg-white flex flex-col text-black">
+            <div id="pdf-page-2" className="p-10 w-[210mm] bg-white flex flex-col text-black">
                 <PdfHeader title="نموذج المستفيد الحقيقي" />
                  <main className="grow text-xs">
                     <p className="text-sm mb-4 bg-blue-50 text-blue-800 p-3 rounded-md">يقر العميل بأنه هو المستفيد الحقيقي والنهائي من الحساب والخدمات المرتبطة به.</p>
@@ -189,11 +181,10 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, do
                         </div>
                     </div>
                 </main>
-                <PdfFooter page={2} total={4} />
             </div>
             
             {/* Page 3: Terms and Conditions */}
-            <div id="pdf-page-3" className="p-10 w-[210mm] h-[297mm] bg-white flex flex-col text-black">
+            <div id="pdf-page-3" className="p-10 w-[210mm] bg-white flex flex-col text-black">
                  <PdfHeader title="طلب فتح حساب شخصي - الشروط والأحكام" />
                 <main className="grow mt-4 text-[10px] text-justify space-y-2 leading-normal">
                     <h3 className="text-base font-bold text-center mb-4 text-gray-800">أحكام وشروط الخدمات الإلكترونية</h3>
@@ -216,39 +207,37 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, do
                         </div>
                     </div>
                 </main>
-                 <PdfFooter page={3} total={4} />
             </div>
             
             {/* Page 4: Attached Documents */}
-            <div id="pdf-page-4" className="p-10 w-[210mm] h-[297mm] bg-white flex flex-col">
+            <div id="pdf-page-4" className="p-10 w-[210mm] bg-white flex flex-col">
                 <PdfHeader title="المستندات المرفقة" />
                 <main className="grow mt-8 flex flex-col items-center justify-center space-y-8">
                      {selfieImage && (
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                             <p className="text-center font-bold text-gray-700 mb-3">صورة التحقق الشخصية (سيلفي)</p>
-                            <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md max-w-full h-auto max-h-64" />
+                            <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
                         </div>
                      )}
                      {docImages.front && (
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                             <p className="text-center font-bold text-gray-700 mb-3">الوجه الأمامي لبطاقة الهوية</p>
-                            <img src={docImages.front} alt="ID Front" className="rounded-lg shadow-md max-w-full h-auto max-h-64" />
+                            <img src={docImages.front} alt="ID Front" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
                         </div>
                      )}
                      {docImages.back && (
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                             <p className="text-center font-bold text-gray-700 mb-3">الوجه الخلفي لبطاقة الهوية</p>
-                            <img src={docImages.back} alt="ID Back" className="rounded-lg shadow-md max-w-full h-auto max-h-64" />
+                            <img src={docImages.back} alt="ID Back" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
                         </div>
                      )}
                     {docImages.passport && (
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                             <p className="text-center font-bold text-gray-700 mb-3">جواز السفر</p>
-                            <img src={docImages.passport} alt="Passport" className="rounded-lg shadow-md max-w-full h-auto max-h-[200mm]" />
+                            <img src={docImages.passport} alt="Passport" className="rounded-lg shadow-md max-w-full h-auto max-h-[240mm]" />
                         </div>
                     )}
                 </main>
-                <PdfFooter page={4} total={4} />
             </div>
 
         </div>
@@ -263,26 +252,66 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
 
   useEffect(() => {
     const generatePdf = async () => {
+        setIsGenerating(true);
         try {
             const { jsPDF } = jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
             const pageIds = ['pdf-page-1', 'pdf-page-2', 'pdf-page-3', 'pdf-page-4'];
 
-            for (let i = 0; i < pageIds.length; i++) {
-                const pageElement = document.getElementById(pageIds[i]);
-                if (pageElement) {
-                    const canvas = await html2canvas(pageElement, { scale: 3, useCORS: true, allowTaint: true });
-                    const imgData = canvas.toDataURL('image/png');
-                    const pdfWidth = pdf.internal.pageSize.getWidth();
-                    const pdfHeight = pdf.internal.pageSize.getHeight();
-                    
-                    if (i > 0) {
+            const pdfWidth = pdf.internal.pageSize.getWidth();
+            const pdfHeight = pdf.internal.pageSize.getHeight();
+            let pageAdded = false;
+
+            for (const pageId of pageIds) {
+                const pageElement = document.getElementById(pageId);
+                if (!pageElement) continue;
+
+                const canvas = await html2canvas(pageElement, {
+                    scale: 3,
+                    useCORS: true,
+                    allowTaint: true,
+                    windowWidth: pageElement.scrollWidth,
+                    windowHeight: pageElement.scrollHeight,
+                });
+                
+                const imgData = canvas.toDataURL('image/png');
+                const imgProps = pdf.getImageProperties(imgData);
+                const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+                let heightLeft = imgHeight;
+                let position = 0;
+
+                while (heightLeft > 0) {
+                    if (pageAdded) {
                         pdf.addPage();
+                    } else {
+                        pageAdded = true;
                     }
-                    pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight, undefined, 'FAST');
+
+                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
+                    heightLeft -= pdfHeight;
+                    position -= pdfHeight;
                 }
             }
             
+            const totalPages = pdf.internal.getNumberOfPages();
+            pdf.setFont('helvetica', 'normal');
+            pdf.setFontSize(8);
+            pdf.setTextColor(128, 128, 128);
+
+            for (let i = 1; i <= totalPages; i++) {
+                pdf.setPage(i);
+                
+                const footerText1 = `This document is confidential. © ${new Date().getFullYear()} Y Coin Cash | ycoincash.com.`;
+                const footerText2 = `Page ${i} of ${totalPages}`;
+                
+                const text1Width = pdf.getStringUnitWidth(footerText1) * pdf.getFontSize() / pdf.internal.scaleFactor;
+                pdf.text(footerText1, (pdfWidth - text1Width) / 2, pdfHeight - 15, { lang: 'en' });
+
+                const text2Width = pdf.getStringUnitWidth(footerText2) * pdf.getFontSize() / pdf.internal.scaleFactor;
+                pdf.text(footerText2, (pdfWidth - text2Width) / 2, pdfHeight - 10, { lang: 'en' });
+            }
+
             const pdfFileName = `KYC_${userData.fullName.replace(/\s/g, '_')}.pdf`;
             const pdfBlob = pdf.output('blob');
             const file = new File([pdfBlob], pdfFileName, { type: 'application/pdf' });
@@ -344,7 +373,7 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
     <div className="animate-fade-in" dir="rtl">
         {/* Hidden container for PDF generation, rendered unconditionally */}
         <div className="absolute -left-[9999px] top-0">
-             <PdfDocument userData={userData} docImages={docImages} signature={signature} selfieImage={selfieImage} onBack={onBack}/>
+             <PdfDocument userData={userData} docImages={docImages} signature={signature} selfieImage={selfieImage}/>
         </div>
 
         {isGenerating ? (

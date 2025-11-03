@@ -1,42 +1,13 @@
 import React, { useState } from 'react';
 import { UserData } from '../types.ts';
 import { ArrowLeftIcon, ArrowRightIcon } from './icons.tsx';
+import { InputField, SelectField } from './FormControls.tsx';
 
 interface PurposeFormProps {
   initialData: UserData;
   onSubmit: (data: Partial<UserData>) => void;
   onBack: () => void;
 }
-
-const InputField: React.FC<{ label: string; name: keyof UserData; value: string; onChange: (e: React.ChangeEvent<HTMLInputElement>) => void; type?: string; className?: string; }> = ({ label, name, value, onChange, type = 'text', className = '' }) => (
-  <div className={className}>
-    <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <input
-      type={type}
-      id={name}
-      name={name}
-      value={value || ''}
-      onChange={onChange}
-      className="mt-1 block w-full px-3 py-2 bg-white border border-gray-300 rounded-lg shadow-sm placeholder-gray-400 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm"
-    />
-  </div>
-);
-
-const SelectField: React.FC<{ label: string; name: string; value: string; onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void; children: React.ReactNode; className?: string; disabled?: boolean; }> = ({ label, name, value, onChange, children, className = '', disabled=false }) => (
-    <div className={className}>
-        <label htmlFor={name} className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-        <select
-            id={name}
-            name={name}
-            value={value || ''}
-            onChange={onChange}
-            disabled={disabled}
-            className="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-orange-500 focus:border-orange-500 sm:text-sm rounded-lg bg-white disabled:bg-gray-100"
-        >
-            {children}
-        </select>
-    </div>
-);
 
 const PurposeForm: React.FC<PurposeFormProps> = ({ initialData, onSubmit, onBack }) => {
     const [formData, setFormData] = useState({
@@ -55,7 +26,7 @@ const PurposeForm: React.FC<PurposeFormProps> = ({ initialData, onSubmit, onBack
     };
 
     return (
-        <div className="animate-fade-in">
+        <div className="animate-fade-in" dir="rtl">
             <div className="text-center mb-8">
                 <h2 className="text-xl sm:text-2xl font-bold text-gray-800">الغرض من الحساب</h2>
                 <p className="text-gray-500 mt-2 text-sm sm:text-base">يرجى تحديد سبب فتح الحساب.</p>
@@ -64,7 +35,7 @@ const PurposeForm: React.FC<PurposeFormProps> = ({ initialData, onSubmit, onBack
                 </div>
             </div>
              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 sm:gap-y-4">
+                 <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-5 sm:gap-y-6">
                     <SelectField label="الغرض الرئيسي" name="accountPurpose" value={formData.accountPurpose} onChange={handleChange} className="md:col-span-2">
                         <option value="">اختر...</option>
                         <option value="Deposit">إيداع</option>

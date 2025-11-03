@@ -58,8 +58,7 @@ const PhoneNumberForm: React.FC<PhoneNumberFormProps> = ({ initialData, onSubmit
             </div>
              <form onSubmit={handleSubmit} className="space-y-4 max-w-sm mx-auto">
                 <div>
-                    <label htmlFor="whatsappNumber" className="block text-sm font-medium text-gray-700 mb-1">رقم الواتساب</label>
-                    <div className="relative rounded-md shadow-sm">
+                    <div className="relative">
                         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                             <span className="text-gray-500 sm:text-sm" dir="ltr">+967</span>
                         </div>
@@ -69,11 +68,17 @@ const PhoneNumberForm: React.FC<PhoneNumberFormProps> = ({ initialData, onSubmit
                             name="whatsappNumber"
                             value={whatsappNumber}
                             onChange={(e) => validateAndSetNumber(e.target.value)}
-                            placeholder="777123456"
-                            className={`block w-full rounded-lg border-0 py-2.5 pl-14 pr-3 text-gray-900 ring-1 ring-inset ${error ? 'ring-red-500 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-500'} placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 text-left`}
+                            placeholder=" "
+                            className={`peer block w-full rounded-lg border-0 py-2.5 pl-16 pr-3 text-gray-900 ring-1 ring-inset ${error ? 'ring-red-500 focus:ring-red-600' : 'ring-gray-300 focus:ring-orange-500'} placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 text-left`}
                             dir="ltr"
                             required
                         />
+                         <label
+                            htmlFor="whatsappNumber"
+                            className="absolute text-sm text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-orange-600 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto start-1"
+                        >
+                            رقم الواتساب
+                        </label>
                     </div>
                     {error && <p className="mt-2 text-sm text-red-600">{error}</p>}
                 </div>
