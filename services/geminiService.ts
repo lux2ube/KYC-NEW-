@@ -35,66 +35,77 @@ const schema = {
 };
 
 export const extractDataFromDocument = async (images: DocImages, docType: DocumentType): Promise<UserData> => {
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-  const model = "gemini-2.5-flash";
-  
-  const parts: any[] = [];
-  const systemInstruction = `أنت خبير في التحقق من الهويات اليمنية. مهمتك هي استخراج المعلومات بدقة متناهية من صور المستندات المقدمة. تعامل مع اللغة العربية بعناية. قم بتحويل أي تواريخ هجرية إلى ميلادية بتنسيق YYYY-MM-DD. إذا كان الجنس غير مذكور، استنتجه من صورة الشخص أو اسمه. إذا كانت الجنسية غير مذكورة، افترض أنها "يمني". بالنسبة لمكان الميلاد، قم بتحليله لتحديد المحافظة والمديرية بدقة. أعد البيانات بتنسيق JSON صارم بناءً على المخطط المحدد.`;
-
-  if (docType === DocumentType.IDCard) {
-    if (!images.front || !images.back) {
-      throw new Error("Front and back images of ID card are required.");
-    }
-    parts.push({ text: "الرجاء استخراج البيانات من صور بطاقة الهوية اليمنية التالية. الوجه الأمامي:" });
-    parts.push(fileToGenerativePart(images.front));
-    parts.push({ text: "الوجه الخلفي:" });
-    parts.push(fileToGenerativePart(images.back));
-  } else if (docType === DocumentType.Passport) {
-    if (!images.passport) {
-      throw new Error("Passport image is required.");
-    }
-    parts.push({ text: "الرجاء استخراج البيانات من صورة جواز السفر اليمني التالية:" });
-    parts.push(fileToGenerativePart(images.passport));
-  } else {
-    throw new Error("Unsupported document type.");
-  }
-
-  const response = await ai.models.generateContent({
-    model,
-    contents: [{ parts: parts }],
-    config: {
-      systemInstruction: systemInstruction,
-      responseMimeType: "application/json",
-      responseSchema: schema,
-    },
-  });
-
-  const text = response.text.trim();
-  
-  let jsonData;
   try {
-    jsonData = JSON.parse(text);
-  } catch (e) {
-    console.error("Failed to parse JSON from Gemini response:", text, e);
-    throw new Error("فشل في فهم الرد من الذكاء الاصطناعي. قد تكون الوثيقة غير واضحة أو أن الخدمة تواجه ضغطاً. يرجى المحاولة مرة أخرى.");
-  }
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const model = "gemini-2.5-flash";
+    
+    const parts: any[] = [];
+    const systemInstruction = `أنت خبير في التحقق من الهويات اليمنية. مهمتك هي استخراج المعلومات بدقة متناهية من صور المستندات المقدمة. تعامل مع اللغة العربية بعناية. قم بتحويل أي تواريخ هجرية إلى ميلادية بتنسيق YYYY-MM-DD. إذا كان الجنس غير مذكور، استنتجه من صورة الشخص أو اسمه. إذا كانت الجنسية غير مذكورة، افترض أنها "يمني". بالنسبة لمكان الميلاد، قم بتحليله لتحديد المحافظة والمديرية بدقة. أعد البيانات بتنسيق JSON صارم بناءً على المخطط المحدد.`;
 
-  return {
-    fullName: jsonData.fullName || '',
-    idNumber: jsonData.idNumber || '',
-    dateOfBirth: jsonData.dateOfBirth || '',
-    placeOfIssue: jsonData.placeOfIssue || '',
-    dateOfIssue: jsonData.dateOfIssue || '',
-    expiryDate: jsonData.expiryDate || '',
-    gender: jsonData.gender === 'ذكر' || jsonData.gender === 'أنثى' ? jsonData.gender : '',
-    nationality: jsonData.nationality || 'يمني',
-    birthGovernorate: jsonData.birthGovernorate || '',
-    birthDistrict: jsonData.birthDistrict || '',
-    whatsappNumber: '',
-    addressGovernorate: '',
-    addressDistrict: '',
-    addressStreet: '',
-    accountPurpose: '',
-    specificPurpose: '',
-  };
+    if (docType === DocumentType.IDCard) {
+      if (!images.front || !images.back) {
+        throw new Error("Front and back images of ID card are required.");
+      }
+      parts.push({ text: "الرجاء استخراج البيانات من صور بطاقة الهوية اليمنية التالية. الوجه الأمامي:" });
+      parts.push(fileToGenerativePart(images.front));
+      parts.push({ text: "الوجه الخلفي:" });
+      parts.push(fileToGenerativePart(images.back));
+    } else if (docType === DocumentType.Passport) {
+      if (!images.passport) {
+        throw new Error("Passport image is required.");
+      }
+      parts.push({ text: "الرجاء استخراج البيانات من صورة جواز السفر اليمني التالية:" });
+      parts.push(fileToGenerativePart(images.passport));
+    } else {
+      throw new Error("Unsupported document type.");
+    }
+
+    const response = await ai.models.generateContent({
+      model,
+      contents: [{ parts: parts }],
+      config: {
+        systemInstruction: systemInstruction,
+        responseMimeType: "application/json",
+        responseSchema: schema,
+      },
+    });
+
+    const text = response.text.trim();
+    
+    let jsonData;
+    try {
+      jsonData = JSON.parse(text);
+    } catch (e) {
+      console.error("Failed to parse JSON from Gemini response:", text, e);
+      throw new Error("فشل في فهم الرد من الذكاء الاصطناعي. قد تكون الوثيقة غير واضحة أو أن الخدمة تواجه ضغطاً. يرجى المحاولة مرة أخرى.");
+    }
+
+    return {
+      fullName: jsonData.fullName || '',
+      idNumber: jsonData.idNumber || '',
+      dateOfBirth: jsonData.dateOfBirth || '',
+      placeOfIssue: jsonData.placeOfIssue || '',
+      dateOfIssue: jsonData.dateOfIssue || '',
+      expiryDate: jsonData.expiryDate || '',
+      gender: jsonData.gender === 'ذكر' || jsonData.gender === 'أنثى' ? jsonData.gender : '',
+      nationality: jsonData.nationality || 'يمني',
+      birthGovernorate: jsonData.birthGovernorate || '',
+      birthDistrict: jsonData.birthDistrict || '',
+      whatsappNumber: '',
+      addressGovernorate: '',
+      addressDistrict: '',
+      addressStreet: '',
+      accountPurpose: '',
+      specificPurpose: '',
+    };
+  } catch (e) {
+    console.error("Error in extractDataFromDocument:", e);
+    if (e instanceof Error && (e.message.includes('API key not valid') || e.message.includes('Requested entity was not found') || e.message.includes('API key is missing'))) {
+        throw new Error('API_KEY_INVALID');
+    }
+    if (e instanceof Error) {
+        throw e; // rethrow other errors like JSON parsing error
+    }
+    throw new Error("فشل الاتصال بخدمة الذكاء الاصطناعي. يرجى التحقق من اتصالك بالإنترنت والمحاولة مرة أخرى.");
+  }
 };

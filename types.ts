@@ -27,3 +27,15 @@ export interface UserData {
   accountPurpose: string;
   specificPurpose: string;
 }
+
+// FIX: Define a named global interface for the aistudio object to resolve type conflicts with other global declarations.
+declare global {
+  interface AIStudio {
+    hasSelectedApiKey: () => Promise<boolean>;
+    openSelectKey: () => Promise<void>;
+  }
+  
+  interface Window {
+    aistudio?: AIStudio;
+  }
+}

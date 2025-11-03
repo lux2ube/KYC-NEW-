@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserData, DocImages, DocumentType } from './types.ts';
 import { extractDataFromDocument } from './services/geminiService.ts';
 
@@ -10,6 +10,7 @@ import PurposeForm from './components/PurposeForm.tsx';
 import SignaturePad from './components/SignaturePad.tsx';
 import Preview from './components/Preview.tsx';
 import StepIndicator from './components/StepIndicator.tsx';
+import ApiKeyPrompt from './components/ApiKeyPrompt.tsx';
 import { LoadingIcon } from './components/icons.tsx';
 
 const initialUserData: UserData = {
@@ -30,6 +31,17 @@ function App() {
   const [signature, setSignature] = useState<string>('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [apiKeyReady, setApiKeyReady] = useState(false);
+
+  useEffect(() => {
+    const checkApiKey = async () => {
+      if (window.aistudio) {
+        const hasKey = await window.aistudio.hasSelectedApiKey();
+        setApiKeyReady(hasKey);
+      }
+    };
+    checkApiKey();
+  }, []);
 
   const handleNextStep = () => setCurrentStep(prev => prev + 1);
   const handlePrevStep = () => setCurrentStep(prev => prev - 1);
@@ -45,7 +57,12 @@ function App() {
     } catch (e) {
       console.error(e);
       if (e instanceof Error) {
-        setError(e.message);
+        if (e.message === 'API_KEY_INVALID') {
+            setError('مفتاح API الخاص بك غير صالح أو مفقود. يرجى تحديد مفتاح صالح.');
+            setApiKeyReady(false);
+        } else {
+            setError(e.message);
+        }
       } else {
         setError('حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.');
       }
@@ -67,6 +84,18 @@ function App() {
   const handleSignatureSubmit = (signatureDataUrl: string) => {
     setSignature(signatureDataUrl);
     handleNextStep();
+  };
+
+  const handleSelectKey = async () => {
+    if (window.aistudio) {
+      try {
+        await window.aistudio.openSelectKey();
+        setApiKeyReady(true);
+        setError(null);
+      } catch (e) {
+        console.error("Error opening select key dialog", e);
+      }
+    }
   };
 
   const renderCurrentStep = () => {
@@ -92,6 +121,8 @@ function App() {
 
   return (
     <div className="bg-slate-50 min-h-screen font-[Tajawal,sans-serif] text-gray-800 flex flex-col items-center p-4 sm:p-8">
+      {!apiKeyReady && <ApiKeyPrompt onSelectKey={handleSelectKey} />}
+      
       <header className="mb-8 text-center">
         <h1 className="text-3xl sm:text-4xl font-extrabold text-gray-800">
             <span className="text-orange-500">Y Coin</span> Cash
