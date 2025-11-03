@@ -1,6 +1,6 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { UserData, DocImages } from '../types.ts';
-import { ArrowRightIcon, DownloadIcon, ShareIcon, CheckIcon, RefreshIcon } from './icons.tsx';
+import { ArrowRightIcon, DownloadIcon, WhatsAppIcon, CheckIcon, RefreshIcon } from './icons.tsx';
 import { LoadingIcon } from './icons.tsx';
 
 declare var jspdf: any;
@@ -66,180 +66,151 @@ const FormSection: React.FC<{ title: string; children: React.ReactNode}> = ({ ti
     </div>
 );
 
-const termsAndConditionsText = {
-    col1: [
-        "1. التعريفات: 1. الموقع / نحن / لنا: يُقصد بها منصة Ycoincash.com، وتشمل الموقع الإلكتروني الرسمي www.ycoincash.com وجميع قنوات الاتصال التابعة لها. 2. المستخدم / أنت: كل شخص طبيعي أو اعتباري يتصفح الموقع أو يتواصل معنا أو يستفيد من خدماتنا بأي شكلٍ من الأشكال. 3. الخدمات: كافة الأنشطة أو المعاملات المتعلقة ببيع أو شراء أو تداول العملات الرقمية، وأي خدمات أخرى يوفرها الموقع. 4. العملات الرقمية: أي أصول رقمية قائمة على تقنية البلوك تشين أو ما ينوب عنها (مثل البيتكوين والإيثيريوم وغيرها).",
-        "2. الوضع القانوني للمنصة: تعمل منصة Ycoincash.com كمزود خدمات عبر الإنترنت ، وفقًا للأنظمة والقوانين النافذة في الجمهورية اليمنية، وتُقر بأنها لا تمارس أي نشاط مصرفي أو تمويلي يستلزم ترخيصًا خاصًا ما لم تحصل على ذلك من الجهات المختصة. كما تحتفظ المنصة بحق اتخاذ جميع الإجراءات القانونية للحصول على التراخيص اللازمة متى ما تطلب نشاطها ذلك، ويُعد استخدامك لخدماتنا إقرارًا منك بفهمك لهذا الوضع القانوني وموافقتك على التعامل معنا على هذا الأساس.",
-        "3. الموافقة على الشروط: باستخدامك لخدماتنا أو تواصلك معنا بأي قناة (بما فيها تطبيق واتساب)، فإنك تُقرّ بأنك قرأت هذه الوثيقة وفهمتها وتوافق على الالتزام بجميع بنودها. وفي حال عدم موافقتك على أي بندٍ وارد في هذه الوثيقة، يجب عليك التوقف فورًا عن استخدام الموقع أو الخدمات أو التواصل معنا.",
-        "4. الموقع الرسمي والهوية: 4.1 يُعدّ www.ycoincash.com الموقع الرسمي الوحيد الممثل لخدماتنا. 4.2 لا نتحمّل مسؤولية أي أضرار أو خسائر تنتج عن تعامل المستخدم مع مواقع أو صفحات تنتحل هويتنا أو تستخدم اسمنا أو شعارنا دون تصريح، أو مع منصات أخرى تدّعي ارتباطها بنا.",
-        "5. التحذير من تحويل الأموال لمنصات الاحتيال والتسويق الهرمي: 5.1 نُحذّر المستخدمين من تحويل أي مبالغ مالية أو عملات رقمية إلى جهاتٍ أو منصاتٍ تُروّج لأرباح سريعة أو عوائد مرتفعة بشكل غير واقعي، بما يشمل التسويق الهرمي أو العمليات الاحتيالية المماثلة. 5.2 يقرّ المستخدم بأنّ أي تحويل للأموال خارج نطاق موقعنا الرسمي وقنواتنا المعتمدة يتمّ على مسؤوليته الخاصة، ولا نتحمّل أي التزام باسترجاع مبالغ أو تعويض خسائر ناجمة عن ذلك.",
-        "6. استخدام واتساب كوسيلة تعامل مالي: 6.1 بمجرد تواصل المستخدم معنا عبر تطبيق واتساب بخصوص معاملات مالية، فإنّه يوافق صراحةً على اعتماد رقم هاتفه المُستخدم في واتساب كوسيلة تعامل مالي رسمية. 6.2 تُعدّ جميع المراسلات والطلبات الصادرة من هذا الرقم صادرة من قِبَل المستخدم نفسه وتُلزمه قانونيًا، ما لم يثبت وجود اختراق أمني مبلّغ عنه مسبقًا. 6.3 يتحمّل المستخدم كامل المسؤولية عن حماية حساب واتساب الخاص به، ولا يُسأل الموقع عن أي اختراق أو إساءة استخدام للحساب.",
-        "7. إجراءات التحقق “اعرف عميلك” (KYC): 7.1 قد نطلب من المستخدم تقديم وثائق رسمية (مثل الهوية أو جواز السفر) بهدف الامتثال لإجراءات التحقق من الهوية (KYC) ومكافحة غسل الأموال (AML) وفق القوانين المعمول بها في الجمهورية اليمنية. 7.2 بإرسال المستخدم لمستنداته الشخصية عبر القنوات المعتمدة، يوافق على جمعها وحفظها لأغراض التحقق والامتثال القانوني، ويقرّ بصحة كافة البيانات المقدمة.",
-        "8. المستفيد الحقيقي والخبرة في مجال العملات الرقمية: 8.1 يقرّ المستخدم بأنّه المستفيد الفعلي من الخدمة وأن جميع المعاملات المالية تجري لصالحه الشخصي، وليس نيابةً عن طرفٍ ثالث غير معلن. 8.2 يؤكد المستخدم أنّ لديه الخبرة والمعرفة الكافية في مجال العملات الرقمية، ويُدرك المخاطر المرتبطة بالتقلّبات السعرية والسوقية. 8.3 يتحمّل المستخدم مسؤوليته الكاملة عن أي خسائر قد تترتب على نقص خبرته أو تقديره غير السليم للمخاطر، ويعفي الموقع من أي تبعات قانونية أو مالية في هذا الشأن.",
-        "9. ضرورة استخدام عنوان المحفظة الرقمية الشخصية: 9.1 على المستخدم تقديم عنوان محفظته الشخصية فقط عند تنفيذ أي معاملة بيع أو شراء أو سحب أو إيداع. 9.2 لا نتحمّل مسؤولية تحويل مبالغ إلى عناوين خاطئة أو غير مملوكة للمستخدم. ويقع على المستخدم عبء التأكد من صحّة وملكية العنوان المقدم.",
-        "10. عدم القدرة على استرجاع المبالغ: 10.1 نظرًا لخصوصية تقنية البلوك تشين وعدم إمكانية عكس المعاملات، فلا يمكننا استرجاع أي مبالغ أو عملات رقمية بعد إتمام التحويل. 10.2 تنحصر مسؤوليتنا في تنفيذ العملية بالاعتماد على البيانات الصحيحة المقدمة من المستخدم، ولا نتحمّل تبعات أي أخطاء في تلك البيانات.",
-    ],
-    col2: [
-        "11. حق تجميد المبالغ عند الاشتباه: 11.1 يحتفظ الموقع بحقّه في تجميد أي مبالغ تَرِد إلى حساباته إذا تبيّن أو اشتُبه في وجود مخالفة لشروطنا أو نشاط احتيالي أو ممارسة غير قانونية. 11.2 في حال وجود شبهة جدّية، يحق لنا إحالة المبالغ إلى الجهات القانونية المختصة أو التعاون معها وفقًا للقوانين السارية في الجمهورية اليمنية لحين الفصل في النزاع أو الشبهة القائمة. 11.3 لا نتحمّل أي مسؤولية عن أضرار أو خسائر قد تلحق بالمستخدم نتيجة تجميد المبالغ في هذه الحالة، طالما كان الإجراء متوافقًا مع القانون أو توجيهات الجهات الرسمية.",
-        "12. تحذير المخاطر: 12.1 تنطوي العملات الرقمية على مخاطر مالية عالية بسبب التقلّبات الحادّة في الأسعار. 12.2 لا يُقدّم الموقع أي نصائح استثمارية أو مالية، ويُنصح المستخدم بإجراء دراسته الخاصة أو استشارة مختصين قبل اتخاذ قرارات الشراء أو البيع أو الاحتفاظ بالعملات الرقمية.",
-        "13. حدود المسؤولية: 13.1 تُقدّم خدماتنا على أساس “كما هي” و”كما هي متوفرة”، دون أي ضمانات صريحة أو ضمنية. 13.2 لا نتحمّل مسؤولية أية خسائر أو أضرار مباشرة أو غير مباشرة تنشأ عن استخدام الخدمات أو الاعتماد على أي معلومات منشورة في موقعنا أو منصاتنا التواصلية. 13.3 لا نتحمّل أي مسؤولية عن تعاملات المستخدم خارج موقعنا الرسمي أو مع أي أطراف تدّعي ارتباطها بنا من دون سند قانوني.",
-        "14. الشروط العامة للاستخدام: 14.1 يشترط لاستخدام الموقع وخدماته أن يكون المستخدم قد بلغ السن القانوني في الجمهورية اليمنية أو في مقر إقامته إذا كان أعلى. 14.2 يجوز لنا طلب أي مستندات إضافية متى استلزم الأمر، التزامًا بسياسات اعرف عميلك (KYC) ومكافحة غسل الأموال (AML) وفق القوانين السارية.",
-        "15. التبليغ عن الممارسات المشبوهة: 15.1 يحتفظ Ycoincash.com بحقّه في الإبلاغ عن أي نشاط يشتبه في مخالفته للقانون اليمني، بما في ذلك جرائم غسل الأموال أو تمويل الإرهاب، وإحالة المعلومات اللازمة للجهات الرسمية المختصة. 15.2 يعفي المستخدم الموقع من أي مسؤولية عن الأضرار أو الخسائر المترتبة على قيامه بالإجراءات القانونية اللازمة أو تعاونه مع السلطات المختصة.",
-        "16. تعديل الشروط والتحديثات: 16.1 يحق لنا تعديل أو تحديث هذه الشروط والأحكام في أي وقت دون إشعار مسبق. 16.2 تسري تلك التعديلات فور نشرها على الموقع، ويُعدّ استمرار المستخدم في استعمال الخدمات بعد نشر التعديلات موافقةً ضمنيةً عليها.",
-        "17. القانون الحاكم والاختصاص القضائي: 17.1 تخضع جميع بنود هذه الشروط والأحكام وتُفسَّر وفقًا للقوانين النافذة في الجمهورية اليمنية. 17.2 ينعقد الاختصاص القضائي الحصري للمحاكم المختصة في الجمهورية اليمنية للنظر في أي نزاع ينشأ عن تطبيق أو تفسير هذه الأحكام.",
-        "18. التواصل والدعم: 18.1 للاستفسارات أو الشكاوى أو المشكلات ذات الصلة، يُرجى التواصل معنا عبر موقعنا الرسمي: www.ycoincash.com. 18.2 لا يُعتدّ بأي قنوات اتصال أخرى تزعم تمثيلنا، ما لم يرد بيان رسمي عنها في موقعنا.",
-        "19. الموافقة النهائية: 19.1 باستخدامك لخدمات Ycoincash.com أو تواصلك معنا عبر قنواتنا الرسمية (بما فيها واتساب)، فإنك تقرّ بموافقتك الكاملة على جميع البنود والالتزامات الواردة في هذه الوثيقة. 19.2 في حال عدم موافقتك على أي بندٍ، يتوجّب عليك الامتناع فورًا عن استخدام خدماتنا أو التواصل معنا.",
-    ]
-};
+const summarizedTerms = [
+    {
+        title: "1. التحقق من الهوية (KYC)",
+        text: "بتقديمك للمستندات، فإنك توافق على جمعها وحفظها لأغراض التحقق من الهوية (KYC) والامتثال للقوانين المعمول بها لمكافحة غسل الأموال."
+    },
+    {
+        title: "2. مسؤولية المستخدم",
+        text: "أنت تقر بأنك المستفيد الفعلي من الخدمة، وأن لديك الخبرة الكافية في مجال العملات الرقمية وتدرك المخاطر المرتبطة بها. أنت مسؤول عن حماية حساباتك وعناوين المحافظ الرقمية الخاصة بك."
+    },
+    {
+        title: "3. تحذير من الاحتيال",
+        text: "نحذر بشدة من تحويل أي أموال إلى جهات تروج لأرباح غير واقعية أو أنشطة احتيالية. أي تحويل خارج منصتنا الرسمية يتم على مسؤوليتك الخاصة."
+    },
+    {
+        title: "4. عدم إمكانية استرجاع المبالغ",
+        text: "نظراً لطبيعة تقنية البلوك تشين، لا يمكن عكس المعاملات أو استرجاع أي مبالغ بعد إتمام التحويل. تقع على عاتقك مسؤولية التأكد من صحة البيانات المقدمة."
+    },
+    {
+        title: "5. حق تجميد الأموال المشبوهة",
+        text: "نحتفظ بالحق في تجميد أي مبالغ إذا اشتبهنا في وجود نشاط غير قانوني أو مخالف لشروطنا، وقد نقوم بإحالة الأمر للجهات القانونية المختصة."
+    },
+    {
+        title: "6. القانون الحاكم",
+        text: "تخضع جميع التعاملات وتفسر وفقاً للقوانين النافذة في الجمهورية اليمنية، وأي نزاع يكون من اختصاص المحاكم اليمنية."
+    }
+];
 
 const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ userData, docImages, signature, selfieImage }) => {
     const today = new Date().toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
     return (
         <div className="bg-white text-gray-900 font-[Tajawal,sans-serif]" dir="rtl">
-            {/* Page 1: KYC Form */}
+            {/* Page 1: Integrated KYC Form */}
             <div id="pdf-page-1" className="p-10 w-[210mm] bg-white flex flex-col text-black">
-                <PdfHeader title="نموذج اعرف عميلك (KYC) لعميل شخصي" />
+                <PdfHeader title="نموذج اعرف عميلك المتكامل (KYC)" />
                 <main className="grow text-xs">
-                    <FormSection title="البيانات الشخصية للعميل">
-                        <Field label="الاسم بالكامل بالعربي" value={userData.fullName} fullWidth />
-                        <Field label="الاسم بالكامل بالانجليزي" value="" fullWidth/>
+                    <FormSection title="البيانات الشخصية وبيانات الهوية">
+                        <Field label="الاسم الكامل" value={userData.fullName} fullWidth />
                         <Field label="الجنس" value={userData.gender} />
                         <Field label="الجنسية" value={userData.nationality} />
                         <Field label="تاريخ الميلاد" value={userData.dateOfBirth} />
                         <Field label="مكان الميلاد" value={`${userData.birthGovernorate} - ${userData.birthDistrict}`} />
-                    </FormSection>
-
-                    <FormSection title="بيانات إثبات الهوية">
-                         <Field label="نوع الهوية" value="بطاقة شخصية" />
-                        <Field label="رقمها" value={userData.idNumber} />
-                        <Field label="تاريخ الإصدار" value={userData.dateOfIssue} />
+                        <Field label="نوع الهوية" value={docImages.passport ? "جواز سفر" : "بطاقة شخصية"} />
+                        <Field label="رقم الهوية" value={userData.idNumber} />
                         <Field label="مكان الإصدار" value={userData.placeOfIssue} />
+                        <Field label="تاريخ الإصدار" value={userData.dateOfIssue} />
                         <Field label="تاريخ الانتهاء" value={userData.expiryDate} />
                     </FormSection>
-                    
-                     <FormSection title="بيانات التواصل والغرض من الحساب">
+
+                    <FormSection title="بيانات التواصل والسكن">
                         <Field label="العنوان الدائم" value={`${userData.addressGovernorate}, ${userData.addressDistrict}, ${userData.addressStreet}`} fullWidth />
-                        <Field label="الجوال" value={userData.whatsappNumber} />
+                        <Field label="رقم الجوال (واتساب)" value={userData.whatsappNumber} />
                         <Field label="البريد الإلكتروني" value="" />
-                        <Field label="الغرض من فتح الحساب" value={userData.accountPurpose} fullWidth/>
                     </FormSection>
 
                     <FormSection title="البيانات المهنية والمالية">
                         <Field label="المهنة / الوظيفة" value={userData.occupation} />
                         <Field label="مصدر الدخل" value={userData.sourceOfFunds} />
+                        <Field label="الغرض من فتح الحساب" value={userData.accountPurpose} fullWidth/>
                     </FormSection>
-
-                     <div className="mt-4 text-xs bg-slate-50 p-4 rounded-lg">
-                        <p className="font-bold">إقرار العميل:</p>
-                        <p className="mt-2">أقر أنا الموقع أدناه بأن جميع البيانات أعلاه صحيحة وأتعهد بتحديثها فور حدوث أي تغييرات، وأتحمل جميع المسؤوليات القانونية المترتبة على إقراري هذا.</p>
+                    
+                    <div className="mt-6 pt-4 border-t-2 border-slate-200 text-xs bg-slate-50 p-4 rounded-lg">
+                        <p className="font-bold text-sm">إقرار العميل:</p>
+                        <p className="mt-2 leading-relaxed">أقر أنا الموقع أدناه، <strong>{userData.fullName}</strong>، بأن جميع البيانات والمعلومات المقدمة في هذا النموذج صحيحة وكاملة ومحدثة، وأتعهد بإبلاغكم فور حدوث أي تغييرات عليها. كما أقر بأنني المستفيد الحقيقي والنهائي من الحساب. وأتحمل المسؤولية القانونية الكاملة المترتبة على صحة هذه البيانات.</p>
                         <div className="flex justify-between items-end mt-6">
                             <div>
                                 <p className="font-semibold text-gray-600">اسم العميل:</p>
                                 <p className="font-bold text-base text-gray-800">{userData.fullName}</p>
                             </div>
-                            <div className="text-center">
-                                <p className="font-semibold text-gray-600">التوقيع:</p>
-                                <img src={signature} alt="Signature" className="h-12 w-36 object-contain bg-white border rounded-md p-1 mt-1" />
-                            </div>
-                        </div>
-                    </div>
-                </main>
-            </div>
-
-            {/* Page 2: Beneficiary Form */}
-            <div id="pdf-page-2" className="p-10 w-[210mm] bg-white flex flex-col text-black">
-                <PdfHeader title="نموذج المستفيد الحقيقي" />
-                 <main className="grow text-xs">
-                    <p className="text-sm mb-4 bg-blue-50 text-blue-800 p-3 rounded-md">يقر العميل بأنه هو المستفيد الحقيقي والنهائي من الحساب والخدمات المرتبطة به.</p>
-                    <FormSection title="البيانات الأساسية للمستفيد الحقيقي">
-                        <Field label="الاسم الكامل" value={userData.fullName} fullWidth />
-                        <Field label="الجنسية" value={userData.nationality} />
-                        <Field label="الجنس" value={userData.gender} />
-                        <Field label="نوع الهوية" value="بطاقة شخصية" />
-                        <Field label="رقمها" value={userData.idNumber} />
-                        <Field label="تاريخ الميلاد" value={userData.dateOfBirth} />
-                         <Field label="تاريخ الانتهاء" value={userData.expiryDate} />
-                    </FormSection>
-                    <FormSection title="عنوان المستفيد الحقيقي">
-                         <Field label="العنوان الدائم (مكان الميلاد)" value={`${userData.birthGovernorate} - ${userData.birthDistrict}`} fullWidth />
-                         <Field label="العنوان الحالي" value={`${userData.addressGovernorate}, ${userData.addressDistrict}, ${userData.addressStreet}`} fullWidth />
-                         <Field label="الجوال" value={userData.whatsappNumber} />
-                    </FormSection>
-                    <div className="mt-8 text-xs bg-slate-50 p-4 rounded-lg">
-                        <p className="font-bold">إقرار العميل:</p>
-                        <p className="mt-2">أقر أنا الموقع أدناه بصحة جميع البيانات المذكورة أعلاه وأوافق على شروط وأحكام الشركة المتعلقة بالمستفيد الحقيقي.</p>
-                        <div className="flex justify-between items-end mt-6">
-                            <div>
-                                <p className="font-semibold text-gray-600">اسم العميل:</p>
-                                <p className="font-bold text-base text-gray-800">{userData.fullName}</p>
+                             <div>
+                                <p className="font-semibold text-gray-600">التاريخ:</p>
+                                <p className="font-bold text-base text-gray-800">{today}</p>
                             </div>
                             <div className="text-center">
                                 <p className="font-semibold text-gray-600">التوقيع:</p>
-                                <img src={signature} alt="Signature" className="h-14 w-36 object-contain bg-white border rounded-md p-1 mt-1" />
+                                <img src={signature} alt="Signature" className="h-16 w-40 object-contain bg-white border rounded-md p-1 mt-1" />
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
             
-            {/* Page 3: Terms and Conditions */}
-            <div id="pdf-page-3" className="p-10 w-[210mm] bg-white flex flex-col text-black">
-                 <PdfHeader title="طلب فتح حساب شخصي - الشروط والأحكام" />
+            {/* Page 2: Terms and Conditions Summary */}
+            <div id="pdf-page-2" className="p-10 w-[210mm] bg-white flex flex-col text-black">
+                <PdfHeader title="ملخص الشروط والأحكام وإقرار الموافقة" />
                 <main className="grow mt-4 text-[10px] text-justify space-y-2 leading-normal">
-                    <h3 className="text-base font-bold text-center mb-4 text-gray-800">أحكام وشروط الخدمات الإلكترونية</h3>
-                    <div className="grid grid-cols-2 gap-x-6">
-                        <div className="space-y-1.5">{termsAndConditionsText.col1.map((p, i) => <p key={`c1-${i}`}>{p}</p>)}</div>
-                        <div className="space-y-1.5">{termsAndConditionsText.col2.map((p, i) => <p key={`c2-${i}`}>{p}</p>)}</div>
+                    <p className="text-sm text-center font-bold mb-4">بموجب التوقيع على هذا المستند، فإنك توافق على الشروط والأحكام الكاملة لـ Y Coin Cash. النقاط التالية هي ملخص لأهم البنود:</p>
+                    <div className="space-y-3 bg-slate-50 p-4 rounded-lg border border-slate-200">
+                        {summarizedTerms.map((term, index) => (
+                            <div key={index}>
+                                <h4 className="font-bold text-xs">{term.title}</h4>
+                                <p className="text-[9px]">{term.text}</p>
+                            </div>
+                        ))}
                     </div>
-                    <div className="pt-6 mt-4 border-t border-slate-200 bg-slate-50 p-4 rounded-lg">
-                        <p className="font-bold text-base text-gray-800">إقرار وموافقة:</p>
-                        <p className="mt-2">أقر أنا الموقع أدناه، {userData.fullName}، حامل الهوية رقم {userData.idNumber}، بأنني قرأت وفهمت ووافقت على جميع الشروط والأحكام المذكورة أعلاه، وأفوض الشركة بتنفيذ كافة العمليات والخدمات وفقًا لذلك. وهذا إقرار مني بذلك.</p>
+                     <div className="pt-6 mt-6 border-t border-slate-200 bg-orange-50 p-4 rounded-lg text-orange-900">
+                        <p className="font-bold text-base">إقرار الموافقة على الشروط والأحكام:</p>
+                        <p className="mt-2">أقر أنا الموقع أدناه، <strong>{userData.fullName}</strong>، حامل الهوية رقم <strong>{userData.idNumber}</strong>، بأنني قرأت وفهمت ووافقت على جميع الشروط والأحكام الكاملة للخدمة، والتي يعتبر هذا الملخص جزءاً منها، وأفوض الشركة بتنفيذ كافة العمليات والخدمات وفقاً لذلك. وهذا إقرار نهائي مني لا رجعة فيه.</p>
                         <div className="mt-6 flex items-end justify-between">
                             <div>
-                                <p className="font-semibold text-gray-600">اسم العميل: <span className="font-bold text-gray-800">{userData.fullName}</span></p>
-                                <p className="font-semibold text-gray-600 mt-2">التاريخ: <span className="font-bold text-gray-800">{today}</span></p>
+                                <p className="font-semibold">اسم العميل: <span className="font-bold">{userData.fullName}</span></p>
+                                <p className="font-semibold mt-2">التاريخ: <span className="font-bold">{today}</span></p>
                             </div>
                             <div className="text-center">
-                                <p className="font-semibold text-gray-600">توقيع العميل:</p>
-                                <img src={signature} alt="Signature" className="h-14 w-36 object-contain mt-1 bg-white border rounded-md p-1" />
+                                <p className="font-semibold">توقيع العميل:</p>
+                                <img src={signature} alt="Signature" className="h-16 w-40 object-contain mt-1 bg-white border rounded-md p-1" />
                             </div>
                         </div>
                     </div>
                 </main>
             </div>
             
-            {/* Page 4: Attached Documents */}
-            <div id="pdf-page-4" className="p-10 w-[210mm] bg-white flex flex-col">
-                <PdfHeader title="المستندات المرفقة" />
-                <main className="grow mt-8 flex flex-col items-center justify-center space-y-8">
-                     {selfieImage && (
-                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="text-center font-bold text-gray-700 mb-3">صورة التحقق الشخصية (سيلفي)</p>
-                            <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
-                        </div>
-                     )}
-                     {docImages.front && (
-                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="text-center font-bold text-gray-700 mb-3">الوجه الأمامي لبطاقة الهوية</p>
-                            <img src={docImages.front} alt="ID Front" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
-                        </div>
-                     )}
-                     {docImages.back && (
-                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="text-center font-bold text-gray-700 mb-3">الوجه الخلفي لبطاقة الهوية</p>
-                            <img src={docImages.back} alt="ID Back" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
-                        </div>
-                     )}
-                    {docImages.passport && (
-                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
-                            <p className="text-center font-bold text-gray-700 mb-3">جواز السفر</p>
-                            <img src={docImages.passport} alt="Passport" className="rounded-lg shadow-md max-w-full h-auto max-h-[240mm]" />
-                        </div>
-                    )}
-                </main>
-            </div>
-
+            {/* Subsequent Pages for Documents */}
+            {selfieImage && (
+                <div id="pdf-page-selfie" className="p-10 w-[210mm] bg-white flex flex-col text-black">
+                    <PdfHeader title="المرفقات - صورة التحقق الشخصية (سيلفي)" />
+                    <main className="grow mt-8 flex flex-col items-center justify-center">
+                        <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md max-w-full h-auto max-h-[220mm] border-4 border-slate-100 p-2" />
+                    </main>
+                </div>
+            )}
+            {docImages.front && (
+                <div id="pdf-page-id-front" className="p-10 w-[210mm] bg-white flex flex-col text-black">
+                    <PdfHeader title="المرفقات - الوجه الأمامي لبطاقة الهوية" />
+                    <main className="grow mt-8 flex flex-col items-center justify-center">
+                        <img src={docImages.front} alt="ID Front" className="rounded-lg shadow-md max-w-full h-auto max-h-[220mm] border-4 border-slate-100 p-2" />
+                    </main>
+                </div>
+            )}
+            {docImages.back && (
+                <div id="pdf-page-id-back" className="p-10 w-[210mm] bg-white flex flex-col text-black">
+                    <PdfHeader title="المرفقات - الوجه الخلفي لبطاقة الهوية" />
+                    <main className="grow mt-8 flex flex-col items-center justify-center">
+                        <img src={docImages.back} alt="ID Back" className="rounded-lg shadow-md max-w-full h-auto max-h-[220mm] border-4 border-slate-100 p-2" />
+                    </main>
+                </div>
+            )}
+            {docImages.passport && (
+                <div id="pdf-page-passport" className="p-10 w-[210mm] bg-white flex flex-col text-black">
+                    <PdfHeader title="المرفقات - جواز السفر" />
+                    <main className="grow mt-8 flex flex-col items-center justify-center">
+                        <img src={docImages.passport} alt="Passport" className="rounded-lg shadow-md max-w-full h-auto max-h-[220mm] border-4 border-slate-100 p-2" />
+                    </main>
+                </div>
+            )}
         </div>
     );
 };
@@ -249,6 +220,7 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
   const [isGenerating, setIsGenerating] = useState(true);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [shareError, setShareError] = useState<string | null>(null);
+  const [canShare, setCanShare] = useState(false);
 
   useEffect(() => {
     const generatePdf = async () => {
@@ -256,15 +228,24 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
         try {
             const { jsPDF } = jspdf;
             const pdf = new jsPDF('p', 'mm', 'a4');
-            const pageIds = ['pdf-page-1', 'pdf-page-2', 'pdf-page-3', 'pdf-page-4'];
+            
+            const pageIds = ['pdf-page-1', 'pdf-page-2'];
+            if (selfieImage) pageIds.push('pdf-page-selfie');
+            if (docImages.front) pageIds.push('pdf-page-id-front');
+            if (docImages.back) pageIds.push('pdf-page-id-back');
+            if (docImages.passport) pageIds.push('pdf-page-passport');
 
             const pdfWidth = pdf.internal.pageSize.getWidth();
             const pdfHeight = pdf.internal.pageSize.getHeight();
-            let pageAdded = false;
-
-            for (const pageId of pageIds) {
+            
+            for (let i = 0; i < pageIds.length; i++) {
+                const pageId = pageIds[i];
                 const pageElement = document.getElementById(pageId);
                 if (!pageElement) continue;
+
+                if (i > 0) {
+                    pdf.addPage();
+                }
 
                 const canvas = await html2canvas(pageElement, {
                     scale: 3,
@@ -277,21 +258,8 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
                 const imgData = canvas.toDataURL('image/png');
                 const imgProps = pdf.getImageProperties(imgData);
                 const imgHeight = (imgProps.height * pdfWidth) / imgProps.width;
-
-                let heightLeft = imgHeight;
-                let position = 0;
-
-                while (heightLeft > 0) {
-                    if (pageAdded) {
-                        pdf.addPage();
-                    } else {
-                        pageAdded = true;
-                    }
-
-                    pdf.addImage(imgData, 'PNG', 0, position, pdfWidth, imgHeight, undefined, 'FAST');
-                    heightLeft -= pdfHeight;
-                    position -= pdfHeight;
-                }
+                
+                pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, imgHeight, undefined, 'FAST');
             }
             
             const totalPages = pdf.internal.getNumberOfPages();
@@ -306,16 +274,22 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
                 const footerText2 = `Page ${i} of ${totalPages}`;
                 
                 const text1Width = pdf.getStringUnitWidth(footerText1) * pdf.getFontSize() / pdf.internal.scaleFactor;
-                pdf.text(footerText1, (pdfWidth - text1Width) / 2, pdfHeight - 15, { lang: 'en' });
+                pdf.text(footerText1, (pdfWidth - text1Width) / 2, pdfHeight - 10, { lang: 'en' });
 
                 const text2Width = pdf.getStringUnitWidth(footerText2) * pdf.getFontSize() / pdf.internal.scaleFactor;
-                pdf.text(footerText2, (pdfWidth - text2Width) / 2, pdfHeight - 10, { lang: 'en' });
+                pdf.text(footerText2, (pdfWidth - text2Width) / 2, pdfHeight - 5, { lang: 'en' });
             }
 
             const pdfFileName = `KYC_${userData.fullName.replace(/\s/g, '_')}.pdf`;
             const pdfBlob = pdf.output('blob');
             const file = new File([pdfBlob], pdfFileName, { type: 'application/pdf' });
             setPdfFile(file);
+
+            if (navigator.share && navigator.canShare && navigator.canShare({ files: [file] })) {
+                setCanShare(true);
+            } else {
+                setCanShare(false);
+            }
         } catch (error) {
             console.error("Failed to generate PDF:", error);
             setShareError("حدث خطأ أثناء إنشاء ملف PDF.");
@@ -371,7 +345,6 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
 
   return (
     <div className="animate-fade-in" dir="rtl">
-        {/* Hidden container for PDF generation, rendered unconditionally */}
         <div className="absolute -left-[9999px] top-0">
              <PdfDocument userData={userData} docImages={docImages} signature={signature} selfieImage={selfieImage}/>
         </div>
@@ -405,16 +378,24 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfi
                         {shareError}
                     </div>
                 )}
-
+                
                 <div className="mt-8 flex flex-col sm:flex-row-reverse items-center gap-4">
-                    <button onClick={handleShare} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
-                        <span>مشاركة المستند</span>
-                        <ShareIcon className="w-5 h-5 mr-2" />
-                    </button>
-                    <button onClick={handleDownload} disabled={!pdfFile} className="w-auto h-12 px-4 inline-flex items-center justify-center bg-gray-600 text-white font-bold rounded-lg shadow-md hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-400">
-                        <DownloadIcon className="w-5 h-5"/>
+                    {canShare ? (
+                        <button onClick={handleShare} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
+                            <span>مشاركة عبر واتساب</span>
+                            <WhatsAppIcon className="w-6 h-6 mr-2" />
+                        </button>
+                    ) : null}
+                    <button onClick={handleDownload} disabled={!pdfFile} className={`w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 text-white font-bold rounded-lg shadow-md transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:bg-gray-400 ${canShare ? 'bg-gray-600 hover:bg-gray-700 focus:ring-gray-500' : 'bg-green-500 hover:bg-green-600 focus:ring-green-500'}`}>
+                        <span>تنزيل PDF</span>
+                        <DownloadIcon className="w-5 h-5 mr-2" />
                     </button>
                 </div>
+                {!canShare && !isGenerating && pdfFile && (
+                    <p className="mt-4 text-xs text-center text-gray-500 bg-gray-100 p-2 rounded-lg">
+                        <strong>نصيحة:</strong> للمشاركة على واتساب، قم بتنزيل الملف أولاً ثم أرفقه يدوياً في المحادثة.
+                    </p>
+                )}
                  <div className="mt-4 flex flex-col sm:flex-row-reverse items-center gap-4">
                     <button type="button" onClick={onStartOver} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
                         <RefreshIcon className="w-5 h-5 ml-2" />
