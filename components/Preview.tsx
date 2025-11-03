@@ -53,14 +53,14 @@ const PdfHeader: React.FC<{ title: string; }> = ({ title }) => (
 
 
 const Field: React.FC<{ label: string; value?: string | null; fullWidth?: boolean }> = ({ label, value, fullWidth = false }) => (
-    <div className={`py-2 border-b border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
+    <div className={`py-1.5 border-b border-slate-100 ${fullWidth ? 'col-span-2' : ''}`}>
         <p className="text-[10px] font-semibold text-gray-500 mb-1">{label}</p>
         <p className="text-[12px] font-bold text-gray-800 font-mono">{value || 'N/A'}</p>
     </div>
 );
 
 const FormSection: React.FC<{ title: string; children: React.ReactNode}> = ({ title, children }) => (
-    <div className="mt-6">
+    <div className="mt-4">
         <h3 className="text-base font-bold text-gray-800 pb-2 mb-2 border-b-2 border-slate-200">{title}</h3>
         <div className="grid grid-cols-2 gap-x-8">{children}</div>
     </div>
@@ -137,7 +137,7 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, do
                         <Field label="مصدر الدخل" value={userData.sourceOfFunds} />
                     </FormSection>
 
-                     <div className="mt-8 text-xs bg-slate-50 p-4 rounded-lg">
+                     <div className="mt-4 text-xs bg-slate-50 p-4 rounded-lg">
                         <p className="font-bold">إقرار العميل:</p>
                         <p className="mt-2">أقر أنا الموقع أدناه بأن جميع البيانات أعلاه صحيحة وأتعهد بتحديثها فور حدوث أي تغييرات، وأتحمل جميع المسؤوليات القانونية المترتبة على إقراري هذا.</p>
                         <div className="flex justify-between items-end mt-6">
@@ -147,7 +147,7 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, do
                             </div>
                             <div className="text-center">
                                 <p className="font-semibold text-gray-600">التوقيع:</p>
-                                <img src={signature} alt="Signature" className="h-14 w-36 object-contain bg-white border rounded-md p-1 mt-1" />
+                                <img src={signature} alt="Signature" className="h-12 w-36 object-contain bg-white border rounded-md p-1 mt-1" />
                             </div>
                         </div>
                     </div>
@@ -195,11 +195,11 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, do
             {/* Page 3: Terms and Conditions */}
             <div id="pdf-page-3" className="p-10 w-[210mm] h-[297mm] bg-white flex flex-col text-black">
                  <PdfHeader title="طلب فتح حساب شخصي - الشروط والأحكام" />
-                <main className="grow mt-4 text-[10px] text-justify space-y-2 leading-relaxed">
+                <main className="grow mt-4 text-[10px] text-justify space-y-2 leading-normal">
                     <h3 className="text-base font-bold text-center mb-4 text-gray-800">أحكام وشروط الخدمات الإلكترونية</h3>
                     <div className="grid grid-cols-2 gap-x-6">
-                        <div className="space-y-2">{termsAndConditionsText.col1.map((p, i) => <p key={`c1-${i}`}>{p}</p>)}</div>
-                        <div className="space-y-2">{termsAndConditionsText.col2.map((p, i) => <p key={`c2-${i}`}>{p}</p>)}</div>
+                        <div className="space-y-1.5">{termsAndConditionsText.col1.map((p, i) => <p key={`c1-${i}`}>{p}</p>)}</div>
+                        <div className="space-y-1.5">{termsAndConditionsText.col2.map((p, i) => <p key={`c2-${i}`}>{p}</p>)}</div>
                     </div>
                     <div className="pt-6 mt-4 border-t border-slate-200 bg-slate-50 p-4 rounded-lg">
                         <p className="font-bold text-base text-gray-800">إقرار وموافقة:</p>
