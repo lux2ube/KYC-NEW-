@@ -7,15 +7,24 @@ interface DocumentUploadProps {
   onSubmit: (images: DocImages, docType: DocumentType) => void;
 }
 
-const FileInput: React.FC<{ id: string; label: string; onFileSelect: (file: string | null) => void; fileName: string | null }> = ({ id, label, onFileSelect, fileName }) => {
+interface FileInputProps {
+    id: string;
+    label: string;
+    onFileSelect: (dataUrl: string | null, fileName: string | null) => void;
+    fileName: string | null;
+}
+
+const FileInput: React.FC<FileInputProps> = ({ id, label, onFileSelect, fileName }) => {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        onFileSelect(reader.result as string);
+        onFileSelect(reader.result as string, file.name);
       };
       reader.readAsDataURL(file);
+    } else {
+        onFileSelect(null, null);
     }
   };
 
@@ -34,7 +43,7 @@ const FileInput: React.FC<{ id: string; label: string; onFileSelect: (file: stri
           </div>
         )}
       </label>
-      <input id={id} type="file" capture="environment" className="hidden" accept="image/jpeg" onChange={handleFileChange} />
+      <input id={id} type="file" capture="environment" className="hidden" accept="image/jpeg,image/png" onChange={handleFileChange} />
     </div>
   );
 };
@@ -45,7 +54,7 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onSubmit }) => {
   const [images, setImages] = useState<DocImages>({ front: null, back: null, passport: null });
   const [fileNames, setFileNames] = useState<{ front: string | null; back: string | null; passport: string | null; }>({ front: null, back: null, passport: null });
 
-  const handleFileSelect = (type: keyof DocImages, dataUrl: string | null, fileName: string) => {
+  const handleFileSelect = (type: keyof DocImages, dataUrl: string | null, fileName: string | null) => {
     setImages(prev => ({ ...prev, [type]: dataUrl }));
     setFileNames(prev => ({ ...prev, [type]: fileName }));
   };
@@ -74,11 +83,11 @@ const DocumentUpload: React.FC<DocumentUploadProps> = ({ onSubmit }) => {
       <form onSubmit={handleSubmit} className="mt-4 max-w-lg mx-auto">
         {docType === DocumentType.IDCard ? (
           <div>
-            <FileInput id="id-front" label="تصوير الوجه الأمامي" fileName={fileNames.front} onFileSelect={(data) => handleFileSelect('front', data, 'id_front.jpg')} />
-            <FileInput id="id-back" label="تصوير الوجه الخلفي" fileName={fileNames.back} onFileSelect={(data) => handleFileSelect('back', data, 'id_back.jpg')} />
+            <FileInput id="id-front" label="تصوير الوجه الأمامي" fileName={fileNames.front} onFileSelect={(data, name) => handleFileSelect('front', data, name)} />
+            <FileInput id="id-back" label="تصوير الوجه الخلفي" fileName={fileNames.back} onFileSelect={(data, name) => handleFileSelect('back', data, name)} />
           </div>
         ) : (
-          <FileInput id="passport" label="تصوير جواز السفر" fileName={fileNames.passport} onFileSelect={(data) => handleFileSelect('passport', data, 'passport.jpg')} />
+          <FileInput id="passport" label="تصوير جواز السفر" fileName={fileNames.passport} onFileSelect={(data, name) => handleFileSelect('passport', data, name)} />
         )}
         
         <div className="mt-8">

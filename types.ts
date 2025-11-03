@@ -26,6 +26,8 @@ export interface UserData {
   addressStreet: string;
   accountPurpose: string;
   specificPurpose: string;
+  occupation: string;
+  sourceOfFunds: string;
 }
 
 // FIX: Define a named global interface for the aistudio object to resolve type conflicts with other global declarations.

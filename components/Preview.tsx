@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { UserData, DocImages } from '../types.ts';
-import { ArrowRightIcon, DownloadIcon, ShareIcon } from './icons.tsx';
+import { ArrowRightIcon, DownloadIcon, ShareIcon, CheckIcon, RefreshIcon } from './icons.tsx';
 import { LoadingIcon } from './icons.tsx';
 
 declare var jspdf: any;
@@ -10,7 +10,9 @@ interface PreviewProps {
   userData: UserData;
   docImages: DocImages;
   signature: string;
+  selfieImage: string | null;
   onBack: () => void;
+  onStartOver: () => void;
 }
 
 const YCoinCashLogo: React.FC<{ className?: string }> = ({ className }) => (
@@ -99,7 +101,7 @@ const termsAndConditionsText = {
     ]
 };
 
-const PdfDocument: React.FC<PreviewProps> = ({ userData, docImages, signature }) => {
+const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver'>> = ({ userData, docImages, signature, selfieImage }) => {
     const today = new Date().toLocaleDateString('ar-EG-u-nu-latn', { year: 'numeric', month: '2-digit', day: '2-digit' });
 
     return (
@@ -130,6 +132,11 @@ const PdfDocument: React.FC<PreviewProps> = ({ userData, docImages, signature })
                         <Field label="الجوال" value={userData.whatsappNumber} />
                         <Field label="البريد الإلكتروني" value="" />
                         <Field label="الغرض من فتح الحساب" value={userData.accountPurpose} fullWidth/>
+                    </FormSection>
+
+                    <FormSection title="البيانات المهنية والمالية">
+                        <Field label="المهنة / الوظيفة" value={userData.occupation} />
+                        <Field label="مصدر الدخل" value={userData.sourceOfFunds} />
                     </FormSection>
 
                      <div className="mt-8 text-xs bg-slate-50 p-4 rounded-lg">
@@ -218,16 +225,22 @@ const PdfDocument: React.FC<PreviewProps> = ({ userData, docImages, signature })
             <div id="pdf-page-4" className="p-10 w-[210mm] h-[297mm] bg-white flex flex-col">
                 <PdfHeader title="المستندات المرفقة" />
                 <main className="grow mt-8 flex flex-col items-center justify-center space-y-8">
+                     {selfieImage && (
+                        <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
+                            <p className="text-center font-bold text-gray-700 mb-3">صورة التحقق الشخصية (سيلفي)</p>
+                            <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md max-w-full h-auto max-h-64" />
+                        </div>
+                     )}
                      {docImages.front && (
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                             <p className="text-center font-bold text-gray-700 mb-3">الوجه الأمامي لبطاقة الهوية</p>
-                            <img src={docImages.front} alt="ID Front" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
+                            <img src={docImages.front} alt="ID Front" className="rounded-lg shadow-md max-w-full h-auto max-h-64" />
                         </div>
                      )}
                      {docImages.back && (
                         <div className="p-4 bg-slate-50 rounded-xl border border-slate-200">
                             <p className="text-center font-bold text-gray-700 mb-3">الوجه الخلفي لبطاقة الهوية</p>
-                            <img src={docImages.back} alt="ID Back" className="rounded-lg shadow-md max-w-full h-auto max-h-80" />
+                            <img src={docImages.back} alt="ID Back" className="rounded-lg shadow-md max-w-full h-auto max-h-64" />
                         </div>
                      )}
                     {docImages.passport && (
@@ -245,7 +258,7 @@ const PdfDocument: React.FC<PreviewProps> = ({ userData, docImages, signature })
 };
 
 
-const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBack }) => {
+const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, selfieImage, onBack, onStartOver }) => {
   const [isGenerating, setIsGenerating] = useState(true);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
   const [shareError, setShareError] = useState<string | null>(null);
@@ -289,7 +302,7 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [userData, docImages, signature]); 
+  }, [userData, docImages, signature, selfieImage]); 
 
   const handleShare = async () => {
     if (!pdfFile) return;
@@ -333,7 +346,7 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
     <div className="animate-fade-in" dir="rtl">
         {/* Hidden container for PDF generation, rendered unconditionally */}
         <div className="absolute -left-[9999px] top-0">
-             <PdfDocument userData={userData} docImages={docImages} signature={signature} onBack={onBack}/>
+             <PdfDocument userData={userData} docImages={docImages} signature={signature} selfieImage={selfieImage} onBack={onBack}/>
         </div>
 
         {isGenerating ? (
@@ -343,19 +356,20 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
                 <p className="text-sm text-gray-500">قد يستغرق هذا بضع ثوانٍ.</p>
             </div>
         ) : (
-            <>
-                <div className="text-center mb-8">
-                    <h2 className="text-xl sm:text-2xl font-bold text-gray-800">اكتمل التسجيل بنجاح!</h2>
-                    <p className="text-gray-500 mt-2">أصبح مستند KYC الخاص بك جاهزاً للمشاركة أو التنزيل.</p>
+            <div className="text-center">
+                <div className="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-green-100 mb-4">
+                    <CheckIcon className="h-8 w-8 text-green-600" />
                 </div>
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">اكتمل التسجيل بنجاح!</h2>
+                <p className="text-gray-500 mt-2 max-w-md mx-auto">تم إنشاء مستند "اعرف عميلك" الخاص بك بنجاح وهو الآن جاهز للمشاركة أو التنزيل.</p>
                 
-                <div className="bg-white p-6 rounded-lg shadow-md border">
-                    <h3 className="font-bold text-lg mb-2">ملخص البيانات</h3>
-                    <p className="text-sm text-gray-600">تم استخدام هذه البيانات لإنشاء مستند KYC الخاص بك.</p>
-                    <div className="mt-4 border-t pt-4">
-                        <p><strong className="text-gray-500">الاسم:</strong> {userData.fullName}</p>
-                        <p><strong className="text-gray-500">رقم الهوية:</strong> {userData.idNumber}</p>
-                        <p><strong className="text-gray-500">رقم الواتساب:</strong> {userData.whatsappNumber}</p>
+                <div className="mt-8 bg-slate-50 p-4 sm:p-6 rounded-lg border text-right">
+                    <h3 className="font-bold text-lg mb-4 text-gray-800">ملخص بيانات العميل</h3>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 text-sm">
+                       <p><strong className="font-semibold text-gray-500">الاسم:</strong> {userData.fullName}</p>
+                       <p><strong className="font-semibold text-gray-500">رقم الهوية:</strong> {userData.idNumber}</p>
+                       <p><strong className="font-semibold text-gray-500">تاريخ الميلاد:</strong> {userData.dateOfBirth}</p>
+                       <p><strong className="font-semibold text-gray-500">رقم الواتساب:</strong> {userData.whatsappNumber}</p>
                     </div>
                 </div>
 
@@ -365,7 +379,7 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
                     </div>
                 )}
 
-                <div className="flex flex-col sm:flex-row-reverse items-center gap-4 pt-8">
+                <div className="mt-8 flex flex-col sm:flex-row-reverse items-center gap-4">
                     <button onClick={handleShare} disabled={!pdfFile} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-green-500 text-white font-bold rounded-lg shadow-md hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 disabled:bg-gray-400">
                         <span>مشاركة المستند</span>
                         <ShareIcon className="w-5 h-5 mr-2" />
@@ -373,12 +387,18 @@ const Preview: React.FC<PreviewProps> = ({ userData, docImages, signature, onBac
                     <button onClick={handleDownload} disabled={!pdfFile} className="w-auto h-12 px-4 inline-flex items-center justify-center bg-gray-600 text-white font-bold rounded-lg shadow-md hover:bg-gray-700 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500 disabled:bg-gray-400">
                         <DownloadIcon className="w-5 h-5"/>
                     </button>
-                    <button type="button" onClick={onBack} className="w-full sm:w-auto inline-flex items-center justify-center px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
-                    <ArrowRightIcon className="w-5 h-5 ml-2" />
-                    <span>رجوع</span>
+                </div>
+                 <div className="mt-4 flex flex-col sm:flex-row-reverse items-center gap-4">
+                    <button type="button" onClick={onStartOver} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-gray-100 text-gray-700 font-bold rounded-lg hover:bg-gray-200 transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">
+                        <RefreshIcon className="w-5 h-5 ml-2" />
+                        <span>البدء من جديد</span>
+                    </button>
+                    <button type="button" onClick={onBack} className="w-full sm:flex-1 inline-flex items-center justify-center px-8 py-3 bg-transparent text-gray-600 font-bold rounded-lg hover:bg-gray-100 transition-colors">
+                        <ArrowRightIcon className="w-5 h-5 ml-2" />
+                        <span>رجوع</span>
                     </button>
                 </div>
-            </>
+            </div>
         )}
     </div>
   );
