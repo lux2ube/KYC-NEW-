@@ -29,13 +29,13 @@ const OccupationForm: React.FC<OccupationFormProps> = ({ initialData, onSubmit, 
     return (
         <div className="animate-fade-in" dir="rtl">
             <div className="text-center mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">المهنة ومصدر الدخل</h2>
-                <p className="text-gray-500 mt-2">يرجى تقديم معلومات حول مهنتك ومصدر دخلك الرئيسي.</p>
-                <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-100 mt-4">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-800">المهنة والدخل</h2>
+                <p className="text-gray-500 mt-2 text-sm sm:text-base">يرجى تقديم معلومات حول مهنتك ومصدر دخلك الرئيسي.</p>
+                <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-100 mt-4">
                      <BriefcaseIcon className="w-12 h-12 text-slate-400" />
                 </div>
             </div>
-             <form onSubmit={handleSubmit} className="space-y-6 max-w-lg mx-auto">
+             <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6 max-w-lg mx-auto">
                  <div>
                     <label htmlFor="occupation" className="block text-sm font-medium text-gray-700 mb-1">المهنة / الوظيفة</label>
                     <input

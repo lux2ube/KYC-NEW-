@@ -78,8 +78,8 @@ const LivenessCheck: React.FC<LivenessCheckProps> = ({ onBack, onSubmit }) => {
 
   return (
     <div className="animate-fade-in" dir="rtl">
-      <div className="text-center mb-8">
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">التحقق من الوجه</h2>
+      <div className="text-center mb-4 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-800">صورة السيلفي</h2>
         <p className="text-gray-500 mt-2">
           {capturedImage ? 'تأكد من أن الصورة واضحة قبل المتابعة.' : 'انظر مباشرة إلى الكاميرا وضع وجهك داخل الإطار.'}
         </p>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { UserData, DocImages, DocumentType } from './types.ts';
-import { extractDataFromDocument, verifyFaceMatch } from './services/geminiService.ts';
+import { extractDataFromDocument } from './services/geminiService.ts';
 
 import DocumentUpload from './components/DocumentUpload.tsx';
 import LivenessCheck from './components/LivenessCheck.tsx';
@@ -22,7 +22,7 @@ const initialUserData: UserData = {
 };
 
 const STEPS = [
-  'رفع المستندات', 'التحقق من الوجه', 'مراجعة البيانات', 'رقم التواصل', 'العنوان', 'الغرض من الحساب', 'المهنة ومصدر الدخل', 'التوقيع', 'المعاينة النهائية'
+  'رفع المستندات', 'صورة السيلفي', 'مراجعة البيانات', 'رقم التواصل', 'العنوان', 'الغرض من الحساب', 'المهنة ومصدر الدخل', 'التوقيع', 'المعاينة النهائية'
 ];
 
 function App() {
@@ -61,37 +61,9 @@ function App() {
     }
   };
 
-  const handleLivenessCheckSubmit = async (selfie: string) => {
-    setIsLoading(true);
-    setError(null);
-    try {
-        const idImage = docImages.front || docImages.passport;
-        if (!idImage) {
-            throw new Error("لم يتم العثور على صورة الهوية للتحقق من الوجه.");
-        }
-        
-        const result = await verifyFaceMatch(idImage, selfie);
-        
-        if (result.match) {
-            setSelfieImage(selfie);
-            handleNextStep();
-        } else {
-            setError(`فشل التحقق من تطابق الوجه: ${result.reason}. يرجى الرجوع والمحاولة مرة أخرى بصورة أوضح.`);
-        }
-    } catch (e) {
-        console.error(e);
-        if (e instanceof Error) {
-            if (e.message === 'API_KEY_INVALID') {
-                setError('فشل المصادقة. يرجى التأكد من صحة مفتاح API المقدم.');
-            } else {
-                setError(e.message);
-            }
-        } else {
-            setError('حدث خطأ غير متوقع. يرجى المحاولة مرة أخرى.');
-        }
-    } finally {
-        setIsLoading(false);
-    }
+  const handleLivenessCheckSubmit = (selfie: string) => {
+    setSelfieImage(selfie);
+    handleNextStep();
   };
 
   const handleDetailsSubmit = (data: UserData) => {
@@ -154,7 +126,7 @@ function App() {
       
       <main className="w-full max-w-4xl bg-white p-4 sm:p-8 rounded-2xl shadow-lg border border-gray-200">
         <StepIndicator currentStep={currentStep} totalSteps={STEPS.length} stepNames={STEPS} />
-        <div className="mt-8 relative">
+        <div className="mt-6 sm:mt-8 relative">
           {isLoading && (
             <div className="absolute inset-0 bg-white bg-opacity-80 flex flex-col items-center justify-center z-10 rounded-lg">
               <LoadingIcon className="w-12 h-12 text-orange-500 animate-spin" />

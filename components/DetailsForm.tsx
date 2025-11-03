@@ -10,9 +10,9 @@ interface DetailsFormProps {
 }
 
 const FormSection: React.FC<{ title: string; children: React.ReactNode }> = ({ title, children }) => (
-    <div className="pt-6">
-        <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-4">{title}</h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+    <div className="pt-4 sm:pt-6">
+        <h3 className="text-lg font-semibold text-gray-800 border-b border-gray-200 pb-2 mb-3 sm:mb-4">{title}</h3>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-3 sm:gap-y-4">
             {children}
         </div>
     </div>
@@ -83,13 +83,13 @@ const DetailsForm: React.FC<DetailsFormProps> = ({ initialData, onSubmit, onBack
     <div className="animate-fade-in">
         <div className="text-center mb-8">
             <h2 className="text-xl sm:text-2xl font-bold text-gray-800">البيانات الشخصية</h2>
-            <p className="text-gray-500 mt-2">يرجى مراجعة البيانات المستخرجة من المستند وتصحيحها إذا لزم الأمر.</p>
-             <div className="inline-flex items-center justify-center w-24 h-24 rounded-full bg-slate-100 mt-4">
+            <p className="text-gray-500 mt-2 text-sm sm:text-base">يرجى مراجعة البيانات المستخرجة من المستند وتصحيحها إذا لزم الأمر.</p>
+             <div className="inline-flex items-center justify-center w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-slate-100 mt-4">
                 <svg className="w-12 h-12 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
             </div>
         </div>
       
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
         <FormSection title="البيانات الشخصية المستخرجة">
           <InputField label="الاسم الكامل" name="fullName" value={formData.fullName} onChange={handleChange} className="md:col-span-2" />
           <InputField label="رقم الهوية" name="idNumber" value={formData.idNumber} onChange={handleChange} />
