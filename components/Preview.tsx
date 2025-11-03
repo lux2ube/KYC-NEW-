@@ -60,7 +60,7 @@ const Field: React.FC<{ label: string; value?: string | null; fullWidth?: boolea
 );
 
 const FormSection: React.FC<{ title: string; children: React.ReactNode}> = ({ title, children }) => (
-    <div className="mt-4">
+    <div className="mt-1">
         <h3 className="text-base font-bold text-gray-800 pb-2 mb-2 border-b-2 border-slate-200">{title}</h3>
         <div className="grid grid-cols-2 gap-x-8">{children}</div>
     </div>
@@ -102,47 +102,45 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ u
             <div id="pdf-page-1" className="p-10 w-[210mm] bg-white flex flex-col text-black">
                 <PdfHeader title="نموذج اعرف عميلك المتكامل (KYC)" />
                 <main className="grow text-xs">
-                    <div className="flex gap-8">
-                        {/* Right Column: Personal Info & Photo */}
-                        <div className="w-2/3 space-y-3">
+                    <div className="flex items-start gap-6">
+                        <div className="w-[120px] flex-shrink-0 pt-4">
+                            {selfieImage && (
+                                <div>
+                                    <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md w-full h-auto border-4 border-slate-100 p-1" />
+                                    <p className="text-[9px] text-gray-500 mt-1 font-semibold text-center">صورة التحقق الشخصية</p>
+                                </div>
+                            )}
+                        </div>
+                        <div className="flex-grow">
                             <FormSection title="البيانات الشخصية وبيانات الهوية">
                                 <Field label="الاسم الكامل" value={userData.fullName} fullWidth />
-                                <Field label="الجنس" value={userData.gender} />
-                                <Field label="الجنسية" value={userData.nationality} />
+                                <Field label="رقم الهوية" value={userData.idNumber} />
+                                <Field label="نوع الهوية" value={docImages.passport ? "جواز سفر" : "بطاقة شخصية"} />
                                 <Field label="تاريخ الميلاد" value={userData.dateOfBirth} />
                                 <Field label="مكان الميلاد" value={`${userData.birthGovernorate} - ${userData.birthDistrict}`} />
-                                <Field label="نوع الهوية" value={docImages.passport ? "جواز سفر" : "بطاقة شخصية"} />
-                                <Field label="رقم الهوية" value={userData.idNumber} />
+                                <Field label="الجنس" value={userData.gender} />
+                                <Field label="الجنسية" value={userData.nationality} />
                                 <Field label="مكان الإصدار" value={userData.placeOfIssue} />
                                 <Field label="تاريخ الإصدار" value={userData.dateOfIssue} />
                                 <Field label="تاريخ الانتهاء" value={userData.expiryDate} />
                             </FormSection>
-                             <FormSection title="البيانات المهنية والمالية">
-                                <Field label="المهنة / الوظيفة" value={userData.occupation} />
-                                <Field label="مصدر الدخل" value={userData.sourceOfFunds} />
-                                <Field label="الغرض من فتح الحساب" value={userData.accountPurpose} fullWidth/>
-                            </FormSection>
-                        </div>
-                        {/* Left Column: Photo & Contact */}
-                        <div className="w-1/3 space-y-3">
-                            {selfieImage && (
-                                <div className="text-center">
-                                    <img src={selfieImage} alt="Selfie" className="rounded-lg shadow-md w-full h-auto border-4 border-slate-100 p-1" />
-                                    <p className="text-[10px] text-gray-500 mt-2 font-semibold">صورة التحقق الشخصية</p>
-                                </div>
-                            )}
-                             <FormSection title="بيانات التواصل والسكن">
-                                <Field label="العنوان الدائم" value={`${userData.addressGovernorate}, ${userData.addressDistrict}, ${userData.addressStreet}`} fullWidth />
-                                <Field label="رقم الجوال (واتساب)" value={userData.whatsappNumber} fullWidth />
-                                <Field label="البريد الإلكتروني" value="" fullWidth />
-                            </FormSection>
                         </div>
                     </div>
 
-                    <div className="mt-6 pt-4 border-t-2 border-slate-200 text-xs bg-slate-50 p-4 rounded-lg">
+                    <div className="mt-1">
+                        <FormSection title="بيانات التواصل والعمل">
+                            <Field label="العنوان الدائم" value={`${userData.addressGovernorate}, ${userData.addressDistrict}, ${userData.addressStreet}`} />
+                            <Field label="رقم الجوال (واتساب)" value={userData.whatsappNumber} />
+                            <Field label="المهنة / الوظيفة" value={userData.occupation} />
+                            <Field label="مصدر الدخل" value={userData.sourceOfFunds} />
+                            <Field label="الغرض من فتح الحساب" value={userData.accountPurpose} fullWidth/>
+                        </FormSection>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t-2 border-slate-200 text-xs bg-slate-50 p-4 rounded-lg">
                         <p className="font-bold text-sm">إقرار العميل:</p>
                         <p className="mt-2 leading-relaxed">أقر أنا الموقع أدناه، <strong>{userData.fullName}</strong>، بأن جميع البيانات والمعلومات المقدمة في هذا النموذج صحيحة وكاملة ومحدثة، وأتعهد بإبلاغكم فور حدوث أي تغييرات عليها. وأتحمل المسؤولية القانونية الكاملة المترتبة على صحة هذه البيانات.</p>
-                        <div className="flex justify-between items-end mt-6">
+                        <div className="flex justify-between items-end mt-4">
                             <div>
                                 <p className="font-semibold text-gray-600">اسم العميل:</p>
                                 <p className="font-bold text-base text-gray-800">{userData.fullName}</p>
@@ -153,7 +151,7 @@ const PdfDocument: React.FC<Omit<PreviewProps, 'onStartOver' | 'onBack'>> = ({ u
                             </div>
                             <div className="text-center">
                                 <p className="font-semibold text-gray-600">التوقيع:</p>
-                                <img src={signature} alt="Signature" className="h-16 w-40 object-contain bg-white border rounded-md p-1 mt-1" />
+                                <img src={signature} alt="Signature" className="h-12 w-32 object-contain bg-white border rounded-md p-1 mt-1" />
                             </div>
                         </div>
                     </div>

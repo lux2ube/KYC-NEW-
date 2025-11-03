@@ -9,6 +9,7 @@ import PhoneNumberForm from './components/PhoneNumberForm.tsx';
 import AddressForm from './components/AddressForm.tsx';
 import PurposeForm from './components/PurposeForm.tsx';
 import OccupationForm from './components/OccupationForm.tsx';
+import BeneficialOwnerDeclaration from './components/BeneficialOwnerDeclaration.tsx';
 import SignaturePad from './components/SignaturePad.tsx';
 import Preview from './components/Preview.tsx';
 import StepIndicator from './components/StepIndicator.tsx';
@@ -22,7 +23,7 @@ const initialUserData: UserData = {
 };
 
 const STEPS = [
-  'رفع المستندات', 'صورة السيلفي', 'مراجعة البيانات', 'رقم التواصل', 'العنوان', 'الغرض من الحساب', 'المهنة ومصدر الدخل', 'التوقيع', 'المعاينة النهائية'
+  'رفع المستندات', 'صورة السيلفي', 'مراجعة البيانات', 'رقم التواصل', 'العنوان', 'الغرض من الحساب', 'المهنة ومصدر الدخل', 'إقرار المستفيد الحقيقي', 'التوقيع', 'المعاينة النهائية'
 ];
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
   const [docImages, setDocImages] = useState<DocImages>({ front: null, back: null, passport: null });
   const [selfieImage, setSelfieImage] = useState<string | null>(null);
   const [signature, setSignature] = useState<string>('');
+  const [beneficialOwnerAgreed, setBeneficialOwnerAgreed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -76,6 +78,11 @@ function App() {
     handleNextStep();
   };
 
+  const handleBeneficialOwnerSubmit = () => {
+    setBeneficialOwnerAgreed(true);
+    handleNextStep();
+  };
+
   const handleSignatureSubmit = (signatureDataUrl: string) => {
     setSignature(signatureDataUrl);
     handleNextStep();
@@ -87,6 +94,7 @@ function App() {
     setDocImages({ front: null, back: null, passport: null });
     setSelfieImage(null);
     setSignature('');
+    setBeneficialOwnerAgreed(false);
     setError(null);
   };
 
@@ -107,8 +115,10 @@ function App() {
       case 7:
         return <OccupationForm initialData={userData} onSubmit={handlePartialUpdate} onBack={handlePrevStep} />;
       case 8:
-        return <SignaturePad onSubmit={handleSignatureSubmit} onBack={handlePrevStep} />;
+        return <BeneficialOwnerDeclaration userData={userData} onSubmit={handleBeneficialOwnerSubmit} onBack={handlePrevStep} />;
       case 9:
+        return <SignaturePad onSubmit={handleSignatureSubmit} onBack={handlePrevStep} />;
+      case 10:
         return <Preview userData={userData} docImages={docImages} signature={signature} selfieImage={selfieImage} onBack={handlePrevStep} onStartOver={handleStartOver} />;
       default:
         return <div>خطأ: خطوة غير معروفة</div>;
